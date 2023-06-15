@@ -5,8 +5,10 @@ import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Brand;
 import java.util.List;
 
 public interface BrandService {
-    Brand findById(int id) ;
+    Brand findById(int id) throws Exception;
     void saveOrUpdate(Brand brand);
-    void removeCourse(Brand brand);
+    void remove(Brand brand);
     List<Brand> findAll();
+
+    Brand findByName(String brandName);
 }

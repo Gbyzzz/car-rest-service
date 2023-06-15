@@ -2,6 +2,7 @@ package ua.foxminded.pinchuk.javaspring.carrestservice.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -12,23 +13,29 @@ public class Model {
     @Column(name = "id")
     private String id;
     @ManyToOne
-    @Column(name = "brand_id")
+    @JoinColumn(name = "brand_id")
     private Brand brand;
     @Column(name = "year")
     private Integer year;
     @Column(name = "name")
     private String name;
 
+    @OneToMany
+    @JoinTable(name = "car_model_type",
+            joinColumns = {@JoinColumn(name = "model_id")},
+            inverseJoinColumns = {@JoinColumn(name = "type_id")})
+    private List<Type> types;
+
     public Model() {
     }
 
-    public Model(String id, Brand brand, Integer year, String name) {
+    public Model(String id, Brand brand, Integer year, String name, List<Type> types) {
         this.id = id;
         this.brand = brand;
         this.year = year;
         this.name = name;
+        this.types = types;
     }
-
 
     public String getId() {
         return id;
@@ -62,17 +69,25 @@ public class Model {
         this.name = name;
     }
 
+    public List<Type> getTypes() {
+        return types;
+    }
+
+    public void setTypes(List<Type> types) {
+        this.types = types;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Model model = (Model) o;
-        return Objects.equals(id, model.id) && Objects.equals(brand, model.brand) && Objects.equals(year, model.year) && Objects.equals(name, model.name);
+        return Objects.equals(id, model.id) && Objects.equals(brand, model.brand) && Objects.equals(year, model.year) && Objects.equals(name, model.name) && Objects.equals(types, model.types);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, brand, year, name);
+        return Objects.hash(id, brand, year, name, types);
     }
 
     @Override
@@ -82,6 +97,7 @@ public class Model {
                 ", brand=" + brand +
                 ", year=" + year +
                 ", name='" + name + '\'' +
+                ", types=" + types +
                 '}';
     }
 }

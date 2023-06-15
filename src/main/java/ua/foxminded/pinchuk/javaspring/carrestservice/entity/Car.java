@@ -14,17 +14,8 @@ public class Car {
     private Integer id;
 
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name = "car_model_type",
-            joinColumns = {@JoinColumn(name = "car_model_type_id")},
-            inverseJoinColumns = {@JoinColumn(name = "model_id")})
-    private Model model;
-
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name = "car_model_type",
-            joinColumns = {@JoinColumn(name = "car_model_type_id")},
-            inverseJoinColumns = {@JoinColumn(name = "type_id")})
-    private Type type;
-
+    @JoinColumn(name = "car_model_type_id")
+    private CarModelType carModelType;
     @Column(name = "car_color")
     private String carColor;
 
@@ -34,11 +25,9 @@ public class Car {
     public Car() {
     }
 
-    public Car(Integer id, Model model, Type type,
-               String carColor, String carPlate) {
+    public Car(Integer id, CarModelType carModelType, String carColor, String carPlate) {
         this.id = id;
-        this.model = model;
-        this.type = type;
+        this.carModelType = carModelType;
         this.carColor = carColor;
         this.carPlate = carPlate;
     }
@@ -51,20 +40,12 @@ public class Car {
         this.id = id;
     }
 
-    public Model getModel() {
-        return model;
+    public CarModelType getCarModelType() {
+        return carModelType;
     }
 
-    public void setModel(Model model) {
-        this.model = model;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
+    public void setCarModelType(CarModelType carModelType) {
+        this.carModelType = carModelType;
     }
 
     public String getCarColor() {
@@ -88,20 +69,19 @@ public class Car {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Car car = (Car) o;
-        return Objects.equals(id, car.id) && Objects.equals(model, car.model) && Objects.equals(type, car.type) && Objects.equals(carColor, car.carColor) && Objects.equals(carPlate, car.carPlate);
+        return Objects.equals(id, car.id) && Objects.equals(carModelType, car.carModelType) && Objects.equals(carColor, car.carColor) && Objects.equals(carPlate, car.carPlate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, model, type, carColor, carPlate);
+        return Objects.hash(id, carModelType, carColor, carPlate);
     }
 
     @Override
     public String toString() {
         return "Car{" +
                 "id=" + id +
-                ", model=" + model +
-                ", type=" + type +
+                ", carModelType=" + carModelType +
                 ", carColor='" + carColor + '\'' +
                 ", carPlate='" + carPlate + '\'' +
                 '}';

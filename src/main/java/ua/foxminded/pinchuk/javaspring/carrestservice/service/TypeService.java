@@ -5,8 +5,10 @@ import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Type;
 import java.util.List;
 
 public interface TypeService {
-    Type findById(int id) ;
+    Type findById(int id) throws Exception;
     void saveOrUpdate(Type type);
-    void removeCourse(Type type);
+    void remove(Type type);
     List<Type> findAll();
+
+    Type findByName(String typeName);
 }

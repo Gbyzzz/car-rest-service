@@ -20,8 +20,11 @@ public class V2___ImportData extends BaseJavaMigration {
     private static int typeId;
     private static final String SQL_ADD_BRAND = "INSERT INTO brand (name)" +
             " values (?) ON CONFLICT (name) DO UPDATE SET name = ? RETURNING id;";
-    private static final String SQL_UPDATE_SEQ = " SELECT setval('brand_id_seq', " +
+    private static final String SQL_UPDATE_BRAND_SEQ = " SELECT setval('brand_id_seq', " +
             "(SELECT MAX(id) from brand));";
+
+    private static final String SQL_UPDATE_TYPE_SEQ = " SELECT setval('type_id_seq', " +
+            "(SELECT MAX(id) from type));";
     private static final String SQL_ADD_TYPE = "INSERT INTO type (name)" +
             " values (?) ON CONFLICT (name) DO UPDATE SET name = ? RETURNING id";
     private static final String SQL_ADD_MODEL = "INSERT INTO model" +
@@ -38,10 +41,11 @@ public class V2___ImportData extends BaseJavaMigration {
             while ((line = br.readLine()) != null) {
                 lineValues = line.split(COMMA_DELIMITER);
                 brandId = insertOneParam(context, SQL_ADD_BRAND, lineValues[1]);
-                updateSeq(context);
+                updateSeq(context, SQL_UPDATE_BRAND_SEQ);
                 insertIntoModel(context);
                 for (int i = 4; i < lineValues.length; i++) {
-                    typeId = insertOneParam(context, SQL_ADD_TYPE, lineValues[i]);
+                    typeId = insertOneParam(context, SQL_ADD_TYPE, lineValues[i].replace("\"", "").replace(" ", ""));
+                    updateSeq(context, SQL_UPDATE_TYPE_SEQ);
                     insertIntoCarModelType(context);
                 }
             }
@@ -66,16 +70,13 @@ public class V2___ImportData extends BaseJavaMigration {
         return generatedId;
     }
 
-    private int updateSeq(Context context) {
-        int generatedId = 0;
-
+    private void updateSeq(Context context, String sql) {
         try(PreparedStatement statement = context.getConnection()
-                .prepareStatement(SQL_UPDATE_SEQ)) {
+                .prepareStatement(sql)) {
             statement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return generatedId;
     }
 
     private void insertIntoModel(Context context) {
