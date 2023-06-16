@@ -9,4 +9,6 @@ public interface UserService {
     void saveOrUpdate(User user);
     void remove(User user);
     List<User> findAll();
+
+    User findByEmail(String email) throws Exception;
 }

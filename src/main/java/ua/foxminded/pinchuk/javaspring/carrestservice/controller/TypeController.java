@@ -1,5 +1,6 @@
 package ua.foxminded.pinchuk.javaspring.carrestservice.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Type;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.TypeService;
@@ -27,16 +28,19 @@ public class TypeController {
     }
 
     @PostMapping("")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     void addType(@RequestBody Type type) throws Exception {
         typeService.saveOrUpdate(type);
     }
 
     @PutMapping("")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     void saveType(@RequestBody Type type) throws Exception {
         typeService.saveOrUpdate(type);
     }
 
     @DeleteMapping("")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     void deleteType(@RequestBody Type type) throws Exception {
         typeService.remove(type);
     }

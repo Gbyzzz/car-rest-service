@@ -1,5 +1,6 @@
 package ua.foxminded.pinchuk.javaspring.carrestservice.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.User;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.UserService;
@@ -26,16 +27,19 @@ public class UserController {
     }
 
     @PostMapping ("")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     void addUser(@RequestBody User user){
         userService.saveOrUpdate(user);
     }
 
     @PutMapping ("")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     void saveUser(@RequestBody User user){
         userService.saveOrUpdate(user);
     }
 
     @DeleteMapping ("")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     void deleteUser(@RequestBody User user){
         userService.remove(user);
     }

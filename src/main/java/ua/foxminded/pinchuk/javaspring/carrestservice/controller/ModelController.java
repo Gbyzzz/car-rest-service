@@ -1,5 +1,6 @@
 package ua.foxminded.pinchuk.javaspring.carrestservice.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Model;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.ModelService;
@@ -43,16 +44,19 @@ public class ModelController {
     }
 
     @PostMapping("/{brand}/{name}/{year}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     void addModel(@PathVariable String brand, @PathVariable String name, @PathVariable Integer year, @RequestBody List<String> typeNames) {
         modelService.add(brand, name, year, typeNames);
     }
 
     @PutMapping("/{brand}/{name}/{year}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     void saveModel(@PathVariable String brand, @PathVariable String name, @PathVariable Integer year, @RequestBody List<String> typeNames) {
         modelService.add(brand, name, year, typeNames);
     }
 
     @DeleteMapping("/{brand}/{name}/{year}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     void deleteModel(@PathVariable String brand, @PathVariable String name, @PathVariable Integer year) {
         modelService.remove(brand, name, year);
     }

@@ -1,6 +1,7 @@
 package ua.foxminded.pinchuk.javaspring.carrestservice.controller;
 
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Car;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.CarService;
@@ -35,16 +36,19 @@ public class CarController {
     }
 
     @PostMapping("")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     void addCar(@RequestBody Car car) {
         carService.saveOrUpdate(car);
     }
 
     @PutMapping("")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     void saveCar(@RequestBody Car car) {
         carService.saveOrUpdate(car);
     }
 
     @DeleteMapping("")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     void deleteCar(@RequestBody Car car) {
         carService.remove(car);
     }
