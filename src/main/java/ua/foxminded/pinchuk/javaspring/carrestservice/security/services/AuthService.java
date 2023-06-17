@@ -25,7 +25,7 @@ public class AuthService implements LogoutHandler {
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response,
-            Authentication authentication) {
+                       Authentication authentication) {
         final String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             SecurityContextHolder.clearContext();

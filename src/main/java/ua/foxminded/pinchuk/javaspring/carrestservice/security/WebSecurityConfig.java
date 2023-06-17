@@ -21,14 +21,11 @@ public class WebSecurityConfig {
 
 
 	private final AuthenticationProvider authenticationProvider;
-//	private final AuthService authService;
 	private final AuthTokenFilter authTokenFilter;
 
 	public WebSecurityConfig(AuthenticationProvider authenticationProvider,
-//							 AuthService authService,
 							 AuthTokenFilter authTokenFilter) {
 		this.authenticationProvider = authenticationProvider;
-//		this.authService = authService;
 		this.authTokenFilter = authTokenFilter;
 	}
 
@@ -46,11 +43,7 @@ public class WebSecurityConfig {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 				.authenticationProvider(authenticationProvider)
-				.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class)
-				.logout()
-				.logoutUrl("/logout")
-//				.addLogoutHandler(authService)
-				.logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext());
+				.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
 
@@ -65,5 +58,5 @@ public class WebSecurityConfig {
 			}
 		};
 	}
-
 }
+

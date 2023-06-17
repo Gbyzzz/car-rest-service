@@ -16,7 +16,7 @@ public class Source {
 
     public static Brand brand1 = new Brand(1, "Mercedes");
     public static Brand brand2 = new Brand(2, "BMW");
-    public static Brand brand3 = new Brand(1, "Audi");
+    public static Brand brand3 = new Brand(3, "Audi");
 
     public static List<Brand> brands = new ArrayList<>() {{
         add(brand1);

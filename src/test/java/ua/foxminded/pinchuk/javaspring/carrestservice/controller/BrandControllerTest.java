@@ -9,6 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import ua.foxminded.pinchuk.javaspring.carrestservice.IntegrationTestBase;
 import ua.foxminded.pinchuk.javaspring.carrestservice.Source;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.BrandService;
 
@@ -22,19 +23,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(BrandController.class)
-class BrandControllerTest {
+class BrandControllerTest extends IntegrationTestBase {
 
     @Autowired
     private MockMvc mvc;
 
-    @MockBean
-    private BrandService brandService;
 
     @Test
     void getAllBrands() throws Exception {
-        given(brandService.findAll()).willReturn(Source.brands);
-
         String expectedJson = new ObjectMapper().writeValueAsString(Source.brands);
             MvcResult result = mvc.perform(get("/api/v1/manufacturer")
                             .contentType(MediaType.APPLICATION_JSON))

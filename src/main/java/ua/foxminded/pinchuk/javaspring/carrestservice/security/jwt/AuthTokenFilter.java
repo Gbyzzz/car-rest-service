@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +19,7 @@ import ua.foxminded.pinchuk.javaspring.carrestservice.security.services.UserDeta
 
 import java.io.IOException;
 @Component
+@DependsOn("flywayInitializer")
 public class AuthTokenFilter extends OncePerRequestFilter {
 	private final JwtUtils jwtUtils;
 

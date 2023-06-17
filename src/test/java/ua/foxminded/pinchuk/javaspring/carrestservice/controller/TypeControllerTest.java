@@ -8,6 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import ua.foxminded.pinchuk.javaspring.carrestservice.IntegrationTestBase;
 import ua.foxminded.pinchuk.javaspring.carrestservice.Source;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.BrandService;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.TypeService;
@@ -19,18 +20,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(TypeController.class)
-class TypeControllerTest {
+class TypeControllerTest  extends IntegrationTestBase {
 
     @Autowired
     private MockMvc mvc;
 
-    @MockBean
-    private TypeService typeService;
-
     @Test
     void getAllTypes() throws Exception {
-        given(typeService.findAll()).willReturn(Source.types);
 
         String expectedJson = new ObjectMapper().writeValueAsString(Source.types);
         MvcResult result = mvc.perform(get("/api/v1/types")

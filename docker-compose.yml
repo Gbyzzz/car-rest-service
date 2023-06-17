@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  car-postgres:
+    image: postgres:15.3
+    ports:
+      - "5433:5432"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: car_db
+  car_rest:
+    build: ./
+    restart: always
+    depends_on:
+      - "car-postgres"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app
+    working_dir: /app
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://car-postgres:5432/car_db?stringtype=unspecified

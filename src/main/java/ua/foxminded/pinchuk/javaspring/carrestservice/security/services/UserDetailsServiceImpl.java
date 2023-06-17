@@ -26,6 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+
 		return UserDetailsImpl.build(user);
 	}
 

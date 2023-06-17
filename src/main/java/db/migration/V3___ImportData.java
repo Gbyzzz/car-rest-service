@@ -5,14 +5,14 @@ import org.flywaydb.core.api.migration.Context;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-public class V2___ImportData extends BaseJavaMigration {
+public class V3___ImportData extends BaseJavaMigration {
+
+//    private final ResourceLoader resourceLoader;
 
     private static final String COMMA_DELIMITER = ",";
     private static String [] lineValues;
@@ -35,7 +35,10 @@ public class V2___ImportData extends BaseJavaMigration {
     @Override
     public void migrate(Context context) throws Exception {
 
-        try (BufferedReader br = new BufferedReader(new FileReader(V2___ImportData.class.getClassLoader().getResource("cars.csv").getPath()))) {
+//        Resource resource = resourceLoader.getResource("classpath:import/cars.csv");
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(getClass()
+                .getResourceAsStream("/import/cars.csv")))) {
             String line;
             br.readLine();
             while ((line = br.readLine()) != null) {
@@ -105,3 +108,4 @@ public class V2___ImportData extends BaseJavaMigration {
     }
 
 }
+
