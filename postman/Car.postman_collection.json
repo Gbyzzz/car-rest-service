@@ -1,0 +1,263 @@
+{
+	"info": {
+		"_postman_id": "5943dbc5-688c-4be7-808b-039eea0526ad",
+		"name": "Car",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20923717"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"admin@car.com\",\r\n    \"password\": \"132435\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/cars",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBjYXIuY29tIiwiaWF0IjoxNjg3MTc5NDQxLCJleHAiOjE2ODcyNjU4NDF9.xkPlbTnF6KLiF8sTnDS6jV5k6SdPR8r7QLsPFcrUqDI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/cars",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"cars"
+					],
+					"query": [
+						{
+							"key": "manufacturer",
+							"value": "volvo",
+							"disabled": true
+						},
+						{
+							"key": "year_min",
+							"value": "2020",
+							"disabled": true
+						},
+						{
+							"key": "year_max",
+							"value": "2019",
+							"disabled": true
+						},
+						{
+							"key": "type",
+							"value": "suv",
+							"disabled": true
+						},
+						{
+							"key": "color",
+							"value": "black",
+							"disabled": true
+						},
+						{
+							"key": "model_name",
+							"value": "Corvette",
+							"disabled": true
+						},
+						{
+							"key": "page",
+							"value": "2",
+							"disabled": true
+						},
+						{
+							"key": "page_size",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/manufacturers/mercedes-benz?year_max=2018&type=coupe&page=2&page_size=4",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/manufacturers/mercedes-benz?year_max=2018&type=coupe&page=2&page_size=4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"manufacturers",
+						"mercedes-benz"
+					],
+					"query": [
+						{
+							"key": "year_min",
+							"value": "2020",
+							"disabled": true
+						},
+						{
+							"key": "year_max",
+							"value": "2018"
+						},
+						{
+							"key": "type",
+							"value": "coupe"
+						},
+						{
+							"key": "page",
+							"value": "2"
+						},
+						{
+							"key": "page_size",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/manufacturers/mercedes-benz/c-class",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/manufacturers/mercedes-benz/c-class",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"manufacturers",
+						"mercedes-benz",
+						"c-class"
+					],
+					"query": [
+						{
+							"key": "year_min",
+							"value": "2015",
+							"disabled": true
+						},
+						{
+							"key": "year_max",
+							"value": "2009",
+							"disabled": true
+						},
+						{
+							"key": "type",
+							"value": "coupe",
+							"disabled": true
+						},
+						{
+							"key": "page",
+							"value": "3",
+							"disabled": true
+						},
+						{
+							"key": "page_size",
+							"value": "4",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/cars?page=2&page_size=1",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBjYXIuY29tIiwiaWF0IjoxNjg3MTc5NDQxLCJleHAiOjE2ODcyNjU4NDF9.xkPlbTnF6KLiF8sTnDS6jV5k6SdPR8r7QLsPFcrUqDI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"id\": null,\r\n        \"carModelType\": {\r\n            \"id\": 6597,\r\n            \"model\": {\r\n                \"id\": \"gOzVcYpvAi\",\r\n        \"brand\": {\r\n            \"id\": 20,\r\n            \"name\": \"Mercedes-Benz\"\r\n        },\r\n        \"year\": 2005,\r\n        \"name\": \"C-Class\",\r\n        \"types\": [\r\n            {\r\n                \"id\": 2,\r\n                \"name\": \"Sedan\"\r\n            },\r\n            {\r\n                \"id\": 3,\r\n                \"name\": \"Coupe\"\r\n            },\r\n            {\r\n                \"id\": 8,\r\n                \"name\": \"Wagon\"\r\n            }\r\n        ]\r\n            },\r\n            \"type\": {\r\n                \"id\": 2,\r\n                \"name\": \"Sedan\"\r\n            }\r\n        },\r\n        \"carColor\": \"Silver\",\r\n        \"carPlate\": \"2477WA\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/cars?page=2&page_size=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"cars"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						},
+						{
+							"key": "page_size",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

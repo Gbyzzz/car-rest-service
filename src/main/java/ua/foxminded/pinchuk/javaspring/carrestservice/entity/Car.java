@@ -13,7 +13,7 @@ public class Car {
     @Column(name = "id")
     private Integer id;
 
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(cascade = {CascadeType.DETACH})
     @JoinColumn(name = "car_model_type_id")
     private CarModelType carModelType;
     @Column(name = "car_color")
