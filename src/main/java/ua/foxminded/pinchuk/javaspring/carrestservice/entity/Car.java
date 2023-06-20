@@ -13,7 +13,7 @@ public class Car {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne(cascade = {CascadeType.DETACH})
+    @OneToOne()
     @JoinColumn(name = "car_model_type_id")
     private CarModelType carModelType;
     @Column(name = "car_color", length = 15)
