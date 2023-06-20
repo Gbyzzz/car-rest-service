@@ -16,10 +16,10 @@ public class Car {
     @OneToOne(cascade = {CascadeType.DETACH})
     @JoinColumn(name = "car_model_type_id")
     private CarModelType carModelType;
-    @Column(name = "car_color", nullable = false)
+    @Column(name = "car_color", length = 15)
     private String carColor;
 
-    @Column(name = "car_plate", nullable = false)
+    @Column(name = "car_plate", length = 10, unique = true)
     private String carPlate;
 
     public Car() {

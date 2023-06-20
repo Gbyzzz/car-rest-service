@@ -14,11 +14,11 @@ public class CarModelType {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "model_id")
+    @JoinColumn(name = "model_id", nullable = false)
     private Model model;
 
     @OneToOne
-    @JoinColumn(name = "type_id")
+    @JoinColumn(name = "type_id", nullable = false)
     private Type type;
 
     public CarModelType() {

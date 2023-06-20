@@ -10,14 +10,14 @@ import java.util.Objects;
 public class Model {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", length = 10)
     private String id;
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
     @Column(name = "year", nullable = false)
     private Integer year;
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", length = 45, nullable = false)
     private String name;
 
     @OneToMany
