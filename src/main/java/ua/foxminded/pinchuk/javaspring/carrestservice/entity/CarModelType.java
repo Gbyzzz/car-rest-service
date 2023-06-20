@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "car_model_type")
+@Table(name = "car_model_type",
+        uniqueConstraints=
+        @UniqueConstraint(
+                columnNames={"model_id", "type_id"}))
 public class CarModelType {
     @Id
     @Column(name = "id")

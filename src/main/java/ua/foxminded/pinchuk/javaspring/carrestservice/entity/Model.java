@@ -13,11 +13,11 @@ public class Model {
     @Column(name = "id")
     private String id;
     @ManyToOne
-    @JoinColumn(name = "brand_id")
+    @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
-    @Column(name = "year")
+    @Column(name = "year", nullable = false)
     private Integer year;
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @OneToMany

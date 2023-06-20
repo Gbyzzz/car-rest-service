@@ -14,10 +14,10 @@ public class User {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "first_name")
@@ -26,12 +26,12 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "role")
+    @Column(name = "role", nullable = false)
     @Type(TypeConverter.class)
     @Enumerated(EnumType.STRING)
     private Role userRole;
 
-    @Column(name = "phone")
+    @Column(name = "phone", unique = true, nullable = false)
     private String phone;
 
     public User() {

@@ -14,9 +14,9 @@ import java.util.stream.Stream;
 
 public class Source {
 
-    public static Brand brand1 = new Brand(1, "Mercedes");
-    public static Brand brand2 = new Brand(2, "BMW");
-    public static Brand brand3 = new Brand(3, "Audi");
+    public static Brand brand1 = new Brand(1L, "Mercedes");
+    public static Brand brand2 = new Brand(2L, "BMW");
+    public static Brand brand3 = new Brand(3L, "Audi");
 
     public static List<Brand> brands = new ArrayList<>() {{
         add(brand1);
@@ -24,18 +24,18 @@ public class Source {
         add(brand3);
     }};
 
-    public static Type type1 = new Type(1, "Sedan");
-    public static Type type2 = new Type(2, "Hatchback");
-    public static Type type3 = new Type(3, "Coupe");
+    public static Type type1 = new Type(1L, "Sedan");
+    public static Type type2 = new Type(2L, "Hatchback");
+    public static Type type3 = new Type(3L, "Coupe");
     public static List<Type> types = new ArrayList<>() {{
         add(type1);
         add(type2);
         add(type3);
     }};
 
-    public static User user1 = new User(1, "admin@car.com", "1111", "John", "Smith", User.Role.ADMIN, "138765487");
-    public static User user2 = new User(2, "staff@car.com", "1111", "Tom", "Green", User.Role.STAFF, "135481314");
-    public static User user3 = new User(3, "antonynewman@gmail.com", "1111", "Anthony", "Newman", User.Role.CUSTOMER, "846321871");
+    public static User user1 = new User(1L, "admin@car.com", "1111", "John", "Smith", User.Role.ADMIN, "138765487");
+    public static User user2 = new User(2L, "staff@car.com", "1111", "Tom", "Green", User.Role.STAFF, "135481314");
+    public static User user3 = new User(3L, "antonynewman@gmail.com", "1111", "Anthony", "Newman", User.Role.CUSTOMER, "846321871");
     public static List<User> users = new ArrayList<>() {{
         add(user1);
         add(user2);
