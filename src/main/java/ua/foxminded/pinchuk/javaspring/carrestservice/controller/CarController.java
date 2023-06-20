@@ -31,7 +31,7 @@ public class CarController {
     }
 
     @GetMapping("/{id}")
-    Car getCarById(@PathVariable Integer id) throws Exception {
+    Car getCarById(@PathVariable Long id) throws Exception {
         return carService.findById(id);
     }
 

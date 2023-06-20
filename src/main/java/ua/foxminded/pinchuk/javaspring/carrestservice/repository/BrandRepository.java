@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Brand;
 
 @Repository
-public interface BrandRepository extends JpaRepository<Brand, Integer> {
+public interface BrandRepository extends JpaRepository<Brand, Long> {
 
     Brand findBrandByName(String brandName);
 

@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Car;
 
 @Repository
-public interface CarRepository extends JpaRepository<Car, Integer>, JpaSpecificationExecutor<Car> {
+public interface CarRepository extends JpaRepository<Car, Long>, JpaSpecificationExecutor<Car> {
 }

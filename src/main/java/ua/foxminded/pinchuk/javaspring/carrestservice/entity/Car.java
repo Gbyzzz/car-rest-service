@@ -11,7 +11,7 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @OneToOne(cascade = {CascadeType.DETACH})
     @JoinColumn(name = "car_model_type_id")
@@ -25,18 +25,18 @@ public class Car {
     public Car() {
     }
 
-    public Car(Integer id, CarModelType carModelType, String carColor, String carPlate) {
+    public Car(Long id, CarModelType carModelType, String carColor, String carPlate) {
         this.id = id;
         this.carModelType = carModelType;
         this.carColor = carColor;
         this.carPlate = carPlate;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

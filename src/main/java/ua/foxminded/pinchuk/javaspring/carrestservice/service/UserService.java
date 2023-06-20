@@ -5,7 +5,7 @@ import ua.foxminded.pinchuk.javaspring.carrestservice.entity.User;
 import java.util.List;
 
 public interface UserService {
-    User findById(int id) throws Exception;
+    User findById(Long id) throws Exception;
     void saveOrUpdate(User user);
     void remove(User user);
     List<User> findAll();

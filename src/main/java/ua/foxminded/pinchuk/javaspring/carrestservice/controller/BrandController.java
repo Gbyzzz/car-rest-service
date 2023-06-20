@@ -22,7 +22,7 @@ public class BrandController {
     }
 
     @GetMapping("/{id}")
-    Brand getBrandById(@PathVariable Integer id) throws Exception {
+    Brand getBrandById(@PathVariable Long id) throws Exception {
         return brandService.findById(id);
     }
 

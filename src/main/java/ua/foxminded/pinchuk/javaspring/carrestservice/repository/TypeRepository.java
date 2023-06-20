@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Type;
 
 @Repository
-public interface TypeRepository extends JpaRepository<Type, Integer> {
+public interface TypeRepository extends JpaRepository<Type, Long> {
 
     Type findTypeByName(String typeName);
 

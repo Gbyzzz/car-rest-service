@@ -11,7 +11,7 @@ public class Type {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -19,16 +19,16 @@ public class Type {
     public Type() {
     }
 
-    public Type(Integer id, String name) {
+    public Type(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

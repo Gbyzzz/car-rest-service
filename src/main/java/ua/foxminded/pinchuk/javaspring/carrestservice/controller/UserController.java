@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    User getUserById(@PathVariable Integer id) throws Exception {
+    User getUserById(@PathVariable Long id) throws Exception {
         return userService.findById(id);
     }
 

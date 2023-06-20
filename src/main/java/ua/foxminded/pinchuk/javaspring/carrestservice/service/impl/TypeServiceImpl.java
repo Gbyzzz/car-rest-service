@@ -17,7 +17,7 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    public Type findById(int id) throws Exception {
+    public Type findById(Long id) throws Exception {
         return typeRepository.findById(id).orElseThrow(
                 () -> new Exception("Type with id " + id +
                         " not found"));

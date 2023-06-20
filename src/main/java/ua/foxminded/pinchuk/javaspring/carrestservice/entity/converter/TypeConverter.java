@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Objects;
 
 public class TypeConverter implements UserType<User.Role> {
     @Override
@@ -28,7 +29,7 @@ public class TypeConverter implements UserType<User.Role> {
 
     @Override
     public int hashCode(User.Role role) {
-        return 0;
+        return Objects.hashCode(role);
     }
 
     @Override

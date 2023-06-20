@@ -23,7 +23,7 @@ public class TypeController {
     }
 
     @GetMapping("/{id}")
-    Type getTypeById(@PathVariable Integer id) throws Exception {
+    Type getTypeById(@PathVariable Long id) throws Exception {
         return typeService.findById(id);
     }
 

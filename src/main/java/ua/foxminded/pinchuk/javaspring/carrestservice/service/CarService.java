@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CarService {
 
-    Car findById(int id) throws Exception;
+    Car findById(Long id) throws Exception;
     void saveOrUpdate(Car car);
     void remove(Car car);
     List<Car> findAll();

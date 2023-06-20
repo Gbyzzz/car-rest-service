@@ -8,7 +8,7 @@ import java.util.Objects;
 public class CarModelType {
     @Id
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "model_id")
@@ -21,17 +21,17 @@ public class CarModelType {
     public CarModelType() {
     }
 
-    public CarModelType(Integer id, Model model, Type type) {
+    public CarModelType(Long id, Model model, Type type) {
         this.id = id;
         this.model = model;
         this.type = type;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
