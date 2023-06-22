@@ -2,6 +2,7 @@ package ua.foxminded.pinchuk.javaspring.carrestservice.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ua.foxminded.pinchuk.javaspring.carrestservice.dto.BrandDTO;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Brand;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.BrandService;
 
@@ -17,12 +18,12 @@ public class BrandController {
     }
 
     @GetMapping("")
-    List<Brand> getAllBrands() {
+    List<BrandDTO> getAllBrands() {
         return brandService.findAll();
     }
 
     @GetMapping("/{id}")
-    Brand getBrandById(@PathVariable Long id) throws Exception {
+    BrandDTO getBrandById(@PathVariable Long id) throws Exception {
         return brandService.findById(id);
     }
 

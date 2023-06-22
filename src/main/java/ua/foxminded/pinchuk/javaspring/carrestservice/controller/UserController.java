@@ -2,6 +2,7 @@ package ua.foxminded.pinchuk.javaspring.carrestservice.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ua.foxminded.pinchuk.javaspring.carrestservice.dto.UserDTO;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.User;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.UserService;
 
@@ -17,12 +18,12 @@ public class UserController {
     }
 
     @GetMapping("")
-    List<User> getAllUsers(){
+    List<UserDTO> getAllUsers(){
         return userService.findAll();
     }
 
     @GetMapping("/{id}")
-    User getUserById(@PathVariable Long id) throws Exception {
+    UserDTO getUserById(@PathVariable Long id) throws Exception {
         return userService.findById(id);
     }
 

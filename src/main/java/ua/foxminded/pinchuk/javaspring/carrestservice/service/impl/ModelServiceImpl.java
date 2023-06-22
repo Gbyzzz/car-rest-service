@@ -4,6 +4,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import org.springframework.stereotype.Service;
+import ua.foxminded.pinchuk.javaspring.carrestservice.dto.ModelDTO;
+import ua.foxminded.pinchuk.javaspring.carrestservice.dto.mapper.ModelMapper;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.*;
 import ua.foxminded.pinchuk.javaspring.carrestservice.repository.ModelRepository;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.BrandService;
@@ -12,6 +14,7 @@ import ua.foxminded.pinchuk.javaspring.carrestservice.service.TypeService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ModelServiceImpl implements ModelService {
@@ -22,19 +25,21 @@ public class ModelServiceImpl implements ModelService {
     private final TypeService typeService;
 
     private final EntityManager entityManager;
+    private final ModelMapper modelMapper;
 
 
     public ModelServiceImpl(ModelRepository modelRepository, BrandService brandService,
-                            TypeService typeService, EntityManager entityManager) {
+                            TypeService typeService, EntityManager entityManager, ModelMapper modelMapper) {
         this.modelRepository = modelRepository;
         this.brandService = brandService;
         this.typeService = typeService;
         this.entityManager = entityManager;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    public Model findById(String id) throws Exception {
-        return modelRepository.findById(id).orElseThrow(
+    public ModelDTO findById(String id) throws Exception {
+        return modelRepository.findById(id).map(modelMapper).orElseThrow(
                 () -> new Exception("Model with id " + id +
                         " not found"));
     }
@@ -50,23 +55,27 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public List<Model> findAll() {
-        return modelRepository.findAll();
+    public List<ModelDTO> findAll() {
+        return modelRepository.findAll().stream().map(modelMapper)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Model> findAllByBrand(String brand) {
-        return modelRepository.getModelsByBrandNameIgnoreCase(brand);
+    public List<ModelDTO> findAllByBrand(String brand) {
+        return modelRepository.getModelsByBrandNameIgnoreCase(brand)
+                .stream().map(modelMapper).collect(Collectors.toList());
     }
 
     @Override
-    public List<Model> findAllByBrandAndName(String brand, String name) {
-        return modelRepository.getModelsByBrandNameIgnoreCaseAndNameIgnoreCase(brand, name);
+    public List<ModelDTO> findAllByBrandAndName(String brand, String name) {
+        return modelRepository.getModelsByBrandNameIgnoreCaseAndNameIgnoreCase(brand, name)
+                .stream().map(modelMapper).collect(Collectors.toList());
     }
 
     @Override
-    public Model findAllByBrandAndNameAndYear(String brand, String name, Integer year) {
-        return modelRepository.getModelsByBrandNameIgnoreCaseAndNameIgnoreCaseAndYear(brand, name, year);
+    public ModelDTO findAllByBrandAndNameAndYear(String brand, String name, Integer year) {
+        return modelRepository.getModelsByBrandNameIgnoreCaseAndNameIgnoreCaseAndYear(brand, name, year)
+                .map(modelMapper).orElseThrow();
     }
 
     @Override
@@ -83,11 +92,11 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public void remove(String brand, String name, Integer year) {
-        remove(modelRepository.getModelsByBrandNameIgnoreCaseAndNameIgnoreCaseAndYear(brand, name, year));
+        remove(modelRepository.getModelsByBrandNameIgnoreCaseAndNameIgnoreCaseAndYear(brand, name, year).orElseThrow());
     }
 
     @Override
-    public List<Model> searchModel(String brandName, String name, Integer yearMin, Integer yearMax,
+    public List<ModelDTO> searchModel(String brandName, String name, Integer yearMin, Integer yearMax,
                                    String type, Integer page, Integer pageSize) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Model> criteriaQuery = criteriaBuilder.createQuery(Model.class);
@@ -128,6 +137,6 @@ public class ModelServiceImpl implements ModelService {
             query.setFirstResult((page - 1) * pageSize);
             query.setMaxResults(pageSize);
         }
-        return query.getResultList();
+        return query.getResultList().stream().map(modelMapper).collect(Collectors.toList());
     }
 }

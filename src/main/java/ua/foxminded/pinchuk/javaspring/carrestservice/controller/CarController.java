@@ -3,6 +3,7 @@ package ua.foxminded.pinchuk.javaspring.carrestservice.controller;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ua.foxminded.pinchuk.javaspring.carrestservice.dto.CarDTO;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Car;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.CarService;
 
@@ -19,7 +20,7 @@ public class CarController {
     }
 
     @GetMapping("")
-    List<Car> getCars(@RequestParam(name = "manufacturer", required = false) String brandName,
+    List<CarDTO> getCars(@RequestParam(name = "manufacturer", required = false) String brandName,
                          @RequestParam(name = "year_min", required = false) Integer yearMin,
                          @RequestParam(name = "year_max", required = false) Integer yearMax,
                          @RequestParam(name = "type", required = false) String type,
@@ -31,7 +32,7 @@ public class CarController {
     }
 
     @GetMapping("/{id}")
-    Car getCarById(@PathVariable Long id) throws Exception {
+    CarDTO getCarById(@PathVariable Long id) throws Exception {
         return carService.findById(id);
     }
 

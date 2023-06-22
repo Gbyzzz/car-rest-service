@@ -7,28 +7,33 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.stereotype.Service;
+import ua.foxminded.pinchuk.javaspring.carrestservice.dto.CarDTO;
+import ua.foxminded.pinchuk.javaspring.carrestservice.dto.mapper.CarMapper;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Car;
 import ua.foxminded.pinchuk.javaspring.carrestservice.repository.CarRepository;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.CarService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CarServiceImpl implements CarService {
 
     private final CarRepository carRepository;
     private final EntityManager entityManager;
+    private final CarMapper carMapper;
 
 
-    public CarServiceImpl(CarRepository carRepository, EntityManager entityManager) {
+    public CarServiceImpl(CarRepository carRepository, EntityManager entityManager, CarMapper carMapper) {
         this.carRepository = carRepository;
         this.entityManager = entityManager;
+        this.carMapper = carMapper;
     }
 
     @Override
-    public Car findById(Long id) throws Exception {
-        return carRepository.findById(id).orElseThrow(
+    public CarDTO findById(Long id) throws Exception {
+        return carRepository.findById(id).map(carMapper).orElseThrow(
                 ()->new Exception("Car with id " + id + " not found"));
     }
 
@@ -48,9 +53,9 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Car> searchCar(String brandName, Integer yearMin, Integer yearMax,
-                               String type, String color, String modelName, Integer page,
-                               Integer pageSize) {
+    public List<CarDTO> searchCar(String brandName, Integer yearMin, Integer yearMax,
+                                  String type, String color, String modelName, Integer page,
+                                  Integer pageSize) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Car> criteriaQuery = criteriaBuilder.createQuery(Car.class);
         Root<Car> root = criteriaQuery.from(Car.class);
@@ -90,5 +95,6 @@ public class CarServiceImpl implements CarService {
             query.setFirstResult((page - 1) * pageSize);
             query.setMaxResults(pageSize);
         }
-        return query.getResultList();    }
+        return query.getResultList().stream().map(carMapper).collect(Collectors.toList());
+    }
 }

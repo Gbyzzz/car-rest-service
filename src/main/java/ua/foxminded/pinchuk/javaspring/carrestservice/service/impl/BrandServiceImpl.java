@@ -1,24 +1,29 @@
 package ua.foxminded.pinchuk.javaspring.carrestservice.service.impl;
 
 import org.springframework.stereotype.Service;
+import ua.foxminded.pinchuk.javaspring.carrestservice.dto.BrandDTO;
+import ua.foxminded.pinchuk.javaspring.carrestservice.dto.mapper.BrandMapper;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Brand;
 import ua.foxminded.pinchuk.javaspring.carrestservice.repository.BrandRepository;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.BrandService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BrandServiceImpl implements BrandService {
 
     private final BrandRepository brandRepository;
+    private final BrandMapper brandMapper;
 
-    public BrandServiceImpl(BrandRepository brandRepository) {
+    public BrandServiceImpl(BrandRepository brandRepository, BrandMapper brandMapper) {
         this.brandRepository = brandRepository;
+        this.brandMapper = brandMapper;
     }
 
     @Override
-    public Brand findById(Long id) throws Exception {
-        return brandRepository.findById(id).orElseThrow(
+    public BrandDTO findById(Long id) throws Exception {
+        return brandRepository.findById(id).map(brandMapper).orElseThrow(
                 ()->new Exception("Brand with id " + id + " not found"));
     }
 
@@ -33,8 +38,9 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public List<Brand> findAll() {
-        return brandRepository.findAll();
+    public List<BrandDTO> findAll() {
+        return brandRepository.findAll().stream().map(brandMapper)
+                .collect(Collectors.toList());
     }
 
     @Override

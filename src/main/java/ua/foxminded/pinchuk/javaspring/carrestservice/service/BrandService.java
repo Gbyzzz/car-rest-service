@@ -1,14 +1,15 @@
 package ua.foxminded.pinchuk.javaspring.carrestservice.service;
 
+import ua.foxminded.pinchuk.javaspring.carrestservice.dto.BrandDTO;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Brand;
 
 import java.util.List;
 
 public interface BrandService {
-    Brand findById(Long id) throws Exception;
+    BrandDTO findById(Long id) throws Exception;
     void saveOrUpdate(Brand brand);
     void remove(Brand brand);
-    List<Brand> findAll();
+    List<BrandDTO> findAll();
 
     Brand findByName(String brandName);
 }

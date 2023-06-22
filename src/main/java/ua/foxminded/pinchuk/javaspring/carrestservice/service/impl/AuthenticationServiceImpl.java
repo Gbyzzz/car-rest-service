@@ -42,7 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        User user = userService.findById(userDetails.getId());
+        User user = userService.findByEmail(userDetails.getEmail());
         return ResponseEntity.ok(new JwtResponse(jwt, user));
     }
 }

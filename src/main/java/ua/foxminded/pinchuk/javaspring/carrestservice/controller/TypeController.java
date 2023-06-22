@@ -2,6 +2,7 @@ package ua.foxminded.pinchuk.javaspring.carrestservice.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ua.foxminded.pinchuk.javaspring.carrestservice.dto.TypeDTO;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Type;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.TypeService;
 
@@ -18,12 +19,12 @@ public class TypeController {
     }
 
     @GetMapping("")
-    List<Type> getAllTypes(){
+    List<TypeDTO> getAllTypes(){
         return typeService.findAll();
     }
 
     @GetMapping("/{id}")
-    Type getTypeById(@PathVariable Long id) throws Exception {
+    TypeDTO getTypeById(@PathVariable Long id) throws Exception {
         return typeService.findById(id);
     }
 

@@ -2,6 +2,7 @@ package ua.foxminded.pinchuk.javaspring.carrestservice.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ua.foxminded.pinchuk.javaspring.carrestservice.dto.ModelDTO;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Model;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.ModelService;
 
@@ -18,17 +19,17 @@ public class ModelController {
     }
 
     @GetMapping("/{brand}")
-    List<Model> getAllModelsOfBrand(@PathVariable String brand,
-                                    @RequestParam(name = "year_min", required = false) Integer yearMin,
-                                    @RequestParam(name = "year_max", required = false) Integer yearMax,
-                                    @RequestParam(name = "type", required = false) String type,
-                                    @RequestParam(name = "page", required = false) Integer page,
-                                    @RequestParam(name = "page_size", required = false) Integer pageSize) {
+    List<ModelDTO> getAllModelsOfBrand(@PathVariable String brand,
+                                       @RequestParam(name = "year_min", required = false) Integer yearMin,
+                                       @RequestParam(name = "year_max", required = false) Integer yearMax,
+                                       @RequestParam(name = "type", required = false) String type,
+                                       @RequestParam(name = "page", required = false) Integer page,
+                                       @RequestParam(name = "page_size", required = false) Integer pageSize) {
         return modelService.searchModel(brand, null, yearMin, yearMax, type, page, pageSize);
     }
 
     @GetMapping("/{brand}/{name}")
-    List<Model> getAllByBrandAndModelName(@PathVariable String brand, @PathVariable String name,
+    List<ModelDTO> getAllByBrandAndModelName(@PathVariable String brand, @PathVariable String name,
                                           @RequestParam(name = "year_min", required = false) Integer yearMin,
                                           @RequestParam(name = "year_max", required = false) Integer yearMax,
                                           @RequestParam(name = "type", required = false) String type,
@@ -38,7 +39,7 @@ public class ModelController {
     }
 
     @GetMapping("/{brand}/{name}/{year}")
-    Model getAllByBrandAndModelNameAndYear(@PathVariable String brand, @PathVariable String name,
+    ModelDTO getAllByBrandAndModelNameAndYear(@PathVariable String brand, @PathVariable String name,
                                            @PathVariable Integer year) {
         return modelService.findAllByBrandAndNameAndYear(brand, name, year);
     }
