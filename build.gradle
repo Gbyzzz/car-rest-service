@@ -21,9 +21,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.flywaydb:flyway-core'
-    implementation "io.jsonwebtoken:jjwt-api:$jsonwebtokenVersion"
-    runtimeOnly "io.jsonwebtoken:jjwt-impl:$jsonwebtokenVersion"
-    runtimeOnly "io.jsonwebtoken:jjwt-jackson:$jsonwebtokenVersion"
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation "org.testcontainers:testcontainers:$testcontainersVersion"
     testImplementation "org.testcontainers:postgresql:$testcontainersVersion"
