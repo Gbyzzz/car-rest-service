@@ -7,34 +7,6 @@
 	},
 	"item": [
 		{
-			"name": "http://localhost:8080/login",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"admin@car.com\",\r\n    \"password\": \"132435\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/login",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "http://localhost:8080/api/v1/cars",
 			"request": {
 				"auth": {
@@ -42,7 +14,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBjYXIuY29tIiwiaWF0IjoxNjg3MTc5NDQxLCJleHAiOjE2ODcyNjU4NDF9.xkPlbTnF6KLiF8sTnDS6jV5k6SdPR8r7QLsPFcrUqDI",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjllZG9OWUhJOWs2TDJMY2gxQzVjRSJ9.eyJpc3MiOiJodHRwczovL2Rldi0ydGxiM2pnNmpxMTJqZnluLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NGExNjdhYTEzYTE1ODUyOGI5MGJmY2IiLCJhdWQiOiJjYXItcmVzdC1zZXJ2aWNlLWFwaSIsImlhdCI6MTY4ODMyOTg3MSwiZXhwIjoxNjg4NDE2MjcxLCJhenAiOiJ3OVZxUzFoTXBycmVkdVYyTjhpUFlmelRXTlN4UTVNQiIsImd0eSI6InBhc3N3b3JkIiwicGVybWlzc2lvbnMiOlsiQURNSU4iXX0.j-8HSSuT5ajHJ9gpudROO__Vt9MnGWxIvy3EekpvOymsPL_OYLMDM4VAqFHtWIfAXArVKvQ7e1XmJgnH8DMuHcWNgTUk3xwp-wini-anL7dDiMTTWZOBOadcNy87qA983lJl43ivqiYqh5h3PieABjirfw4RXsL9iv4D6v69ic08gFpXInnfID7ty_rUhE9mXUZuH3fwA4QbzBMAtxHvgthWucfu0Fk3KVDVZq9c4cozDh858NBULRTl4i8GdMQ0rzpk5VbfPJJPAfXPByTdtVB1FIFlqLBzYFr7Ay4Srz4suqTUtZUpk0acyZPp-uZgGwp7E3OsJjqDWyklxwRUug",
 							"type": "string"
 						}
 					]
@@ -113,6 +85,16 @@
 				"disableBodyPruning": true
 			},
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjllZG9OWUhJOWs2TDJMY2gxQzVjRSJ9.eyJpc3MiOiJodHRwczovL2Rldi0ydGxiM2pnNmpxMTJqZnluLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NGExNjdhYTEzYTE1ODUyOGI5MGJmY2IiLCJhdWQiOiJjYXItcmVzdC1zZXJ2aWNlLWFwaSIsImlhdCI6MTY4ODMyOTg3MSwiZXhwIjoxNjg4NDE2MjcxLCJhenAiOiJ3OVZxUzFoTXBycmVkdVYyTjhpUFlmelRXTlN4UTVNQiIsImd0eSI6InBhc3N3b3JkIiwicGVybWlzc2lvbnMiOlsiQURNSU4iXX0.j-8HSSuT5ajHJ9gpudROO__Vt9MnGWxIvy3EekpvOymsPL_OYLMDM4VAqFHtWIfAXArVKvQ7e1XmJgnH8DMuHcWNgTUk3xwp-wini-anL7dDiMTTWZOBOadcNy87qA983lJl43ivqiYqh5h3PieABjirfw4RXsL9iv4D6v69ic08gFpXInnfID7ty_rUhE9mXUZuH3fwA4QbzBMAtxHvgthWucfu0Fk3KVDVZq9c4cozDh858NBULRTl4i8GdMQ0rzpk5VbfPJJPAfXPByTdtVB1FIFlqLBzYFr7Ay4Srz4suqTUtZUpk0acyZPp-uZgGwp7E3OsJjqDWyklxwRUug",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"body": {
@@ -162,6 +144,16 @@
 		{
 			"name": "http://localhost:8080/api/v1/manufacturers/mercedes-benz/c-class",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjllZG9OWUhJOWs2TDJMY2gxQzVjRSJ9.eyJpc3MiOiJodHRwczovL2Rldi0ydGxiM2pnNmpxMTJqZnluLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NGEyOTM5ZTMwNDZlYjYwNTcwYmFjNTQiLCJhdWQiOiJjYXItcmVzdC1zZXJ2aWNlLWFwaSIsImlhdCI6MTY4ODM3NjQzOCwiZXhwIjoxNjg4NDYyODM4LCJhenAiOiJ3OVZxUzFoTXBycmVkdVYyTjhpUFlmelRXTlN4UTVNQiIsImd0eSI6InBhc3N3b3JkIiwicGVybWlzc2lvbnMiOlsiQ1VTVE9NRVIiXX0.R2ElnQQVzR98Yjr5OJMVjkj2zlXtiPBCNj8Quk49IDDY1i0jTzIe8Na6WbbwHChPDvongxUaNrRS4qXrJMRKB_ZR8I2wmVr5LTyuetLU2H5vym_Lha26lntUoLd9GGyEWB1qzwzNLZSOVKxqIoyvjMnV0Ootna67NIkFfq8smNfeeuHMakVhUXQ1XkzbNVWYR39L2NVTlsf3o1C1ho5K2pNjSuWRU0lbCOGRM204wtxh1P70s3AsBs1-_42BYIPjAizvIUGhLvONV7c5dlDRyHc40wGSm8lsMl1gSHHy9Y1Ff3Xwd0Yrn6kv-s2umkiWlpZGG8U42c1JLrE2Cg7g8A",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -217,7 +209,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBjYXIuY29tIiwiaWF0IjoxNjg3MTc5NDQxLCJleHAiOjE2ODcyNjU4NDF9.xkPlbTnF6KLiF8sTnDS6jV5k6SdPR8r7QLsPFcrUqDI",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjllZG9OWUhJOWs2TDJMY2gxQzVjRSJ9.eyJpc3MiOiJodHRwczovL2Rldi0ydGxiM2pnNmpxMTJqZnluLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NGExNjdhYTEzYTE1ODUyOGI5MGJmY2IiLCJhdWQiOiJjYXItcmVzdC1zZXJ2aWNlLWFwaSIsImlhdCI6MTY4ODMxNjQzOSwiZXhwIjoxNjg4NDAyODM5LCJhenAiOiJ3OVZxUzFoTXBycmVkdVYyTjhpUFlmelRXTlN4UTVNQiIsInNjb3BlIjoiU1RBRkYgQURNSU4gQ1VTVE9NRVIiLCJndHkiOiJwYXNzd29yZCJ9.Ab0y1OHsxiKz6qZ6ftZ2cHpbSlscAY9faFMTvTIKRiwUjbGYLse7EoVw3Q6rx2pB0sIUSGBhLeoZD_dBn_JE_0o7vXpPwNb6qosbAjh8Hy144Fxpwa-TPINdz2Iz4o_DWy-U5FbyX9_C61pehHCoyNlxND7NLO5dmQ28nm9q8UZm6-Z9Tzo5QW3QfEBdVMTSJVaIHQMDcMDQRUiaP9yfcgx8eaIE8d6rgSslMcWHW8W-GVrcVEKTEG0EhlIGf1iVgwZ5WWBc35pH8achu_y2izt4xTqxz3ioWt51uH-PVT3xBhr0KZkL6Pv0ruZXK4aFKhr5NwkA3jO0keP6noAE8A",
 							"type": "string"
 						}
 					]
@@ -234,7 +226,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/cars?page=2&page_size=1",
+					"raw": "http://localhost:8080/api/v1/cars",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -248,16 +240,107 @@
 					"query": [
 						{
 							"key": "page",
-							"value": "2"
+							"value": "2",
+							"disabled": true
 						},
 						{
 							"key": "page_size",
-							"value": "1"
+							"value": "1",
+							"disabled": true
 						}
 					]
 				}
 			},
 			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "username",
+				"value": "antonynewman@gmail.com",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "132435",
+				"type": "string"
+			},
+			{
+				"key": "tokenRequestParams",
+				"value": [
+					{
+						"key": "audience",
+						"value": "car-rest-service-api",
+						"enabled": true,
+						"send_as": "request_body"
+					}
+				],
+				"type": "any"
+			},
+			{
+				"key": "clientSecret",
+				"value": "nWyETULIXzYADEOJ46C3_ripxUO8IOgOUl43oP83RrpYLBxn9anT0yjBXurCrQIc",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "w9VqS1hMprreduV2N8iPYfzTWNSxQ5MB",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "refreshRequestParams",
+				"value": [
+					{
+						"key": "audience",
+						"value": "http://localhost:8080/api/v1/cars",
+						"enabled": false,
+						"send_as": "request_header"
+					}
+				],
+				"type": "any"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "https://dev-2tlb3jg6jq12jfyn.us.auth0.com/oauth/token",
+				"type": "string"
+			},
+			{
+				"key": "grant_type",
+				"value": "password_credentials",
+				"type": "string"
+			},
+			{
+				"key": "tokenName",
+				"value": "PostmanToken",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }

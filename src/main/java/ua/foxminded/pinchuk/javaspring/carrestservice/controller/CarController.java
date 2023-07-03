@@ -20,6 +20,7 @@ public class CarController {
     }
 
     @GetMapping("")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     List<CarDTO> getCars(@RequestParam(name = "manufacturer", required = false) String brandName,
                          @RequestParam(name = "year_min", required = false) Integer yearMin,
                          @RequestParam(name = "year_max", required = false) Integer yearMax,
