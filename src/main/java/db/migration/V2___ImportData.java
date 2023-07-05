@@ -4,13 +4,12 @@ import org.flywaydb.core.api.migration.BaseJavaMigration;
 import org.flywaydb.core.api.migration.Context;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class V3___ImportData extends BaseJavaMigration {
+public class V2___ImportData extends BaseJavaMigration {
 
 //    private final ResourceLoader resourceLoader;
 

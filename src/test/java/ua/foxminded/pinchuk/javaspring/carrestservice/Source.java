@@ -4,10 +4,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Brand;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Model;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Type;
-import ua.foxminded.pinchuk.javaspring.carrestservice.entity.User;
 
 import java.text.ParseException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;

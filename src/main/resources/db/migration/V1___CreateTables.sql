@@ -38,14 +38,3 @@ CREATE TABLE cars
     car_color          varchar(15),
     car_plate          varchar(10) UNIQUE
 );
-
-CREATE TABLE users
-(
-    user_id bigserial PRIMARY KEY,
-    email varchar(256) UNIQUE NOT NULL,
-    password varchar(200) NOT NULL,
-    first_name varchar(15) DEFAULT NULL,
-    last_name varchar(30) DEFAULT NULL,
-    role car_rest_service_user_role NOT NULL DEFAULT 'CUSTOMER',
-    phone varchar(15) UNIQUE DEFAULT NULL
-);
