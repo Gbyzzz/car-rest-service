@@ -5,7 +5,9 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springdoc.core.annotations.RouterOperation;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/cars")
+@Tag(name = "Car API")
 public class CarController {
 
     private final CarService carService;
@@ -28,12 +31,13 @@ public class CarController {
     }
 
     @GetMapping("")
-    @RouterOperation(operation = @Operation(summary = "getCars", security =
-    @SecurityRequirement(name = "bearerAuth", scopes = {"ADMIN", "STAFF"}),
-            responses = @ApiResponse(responseCode = "200", content = @Content(
-                    array = @ArraySchema(
-                            arraySchema = @Schema(implementation = CarDTO.class))))))
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
+    @Operation(summary = "Get all cars")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", content = @Content(
+            array = @ArraySchema(
+                    arraySchema = @Schema(implementation = CarDTO.class))))})
+    @SecurityRequirement(name = "bearerAuth", scopes = {"read:car"})
+    @PreAuthorize("hasAuthority('read:car')")
     List<CarDTO> getCars(@RequestParam(name = "manufacturer", required = false) String brandName,
                          @RequestParam(name = "year_min", required = false) Integer yearMin,
                          @RequestParam(name = "year_max", required = false) Integer yearMax,
@@ -46,36 +50,35 @@ public class CarController {
     }
 
     @GetMapping("/{id}")
-    @RouterOperation(operation = @Operation(summary = "getCarById",
-            responses = @ApiResponse(responseCode = "200", content = @Content(
-                    schema = @Schema(implementation = CarDTO.class)))))
+    @Operation(summary = "Get car by id", description = "Car must exist")
+    @ApiResponses( value = {
+            @ApiResponse(responseCode = "200", content = @Content(
+                    schema = @Schema(implementation = CarDTO.class)))
+    })
     CarDTO getCarById(@PathVariable Long id) throws Exception {
         return carService.findById(id);
     }
 
     @PostMapping("")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
-    @RouterOperation(operation = @Operation(summary = "addCar",
-            security = @SecurityRequirement(name = "bearerAuth",
-                    scopes = {"ADMIN", "STAFF"})))
+    @PreAuthorize("hasAnyAuthority('add:car')")
+    @Operation(summary = "Add car")
+    @SecurityRequirement(name = "bearerAuth", scopes = {"add:car"})
     void addCar(@RequestBody Car car) {
         carService.saveOrUpdate(car);
     }
 
     @PutMapping("")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
-    @RouterOperation(operation = @Operation(summary = "saveCar",
-            security = @SecurityRequirement(name = "bearerAuth",
-                    scopes = {"ADMIN", "STAFF"})))
-    void saveCar(@RequestBody Car car) {
+    @PreAuthorize("hasAnyAuthority('update:car')")
+    @Operation(summary = "Update car")
+    @SecurityRequirement(name = "bearerAuth", scopes = {"update:car"})
+    void updateCar(@RequestBody Car car) {
         carService.saveOrUpdate(car);
     }
 
     @DeleteMapping("")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
-    @RouterOperation(operation = @Operation(summary = "deleteCar",
-            security = @SecurityRequirement(name = "bearerAuth",
-                    scopes = {"ADMIN", "STAFF"})))
+    @PreAuthorize("hasAnyAuthority('delete:car')")
+    @Operation(summary = "Delete car")
+    @SecurityRequirement(name = "bearerAuth", scopes = {"delete:car"})
     void deleteCar(@RequestBody Car car) {
         carService.remove(car);
     }
