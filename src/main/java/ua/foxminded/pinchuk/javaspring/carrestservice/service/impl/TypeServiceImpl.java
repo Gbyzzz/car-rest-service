@@ -40,7 +40,8 @@ public class TypeServiceImpl implements TypeService {
 
     @Override
     public List<TypeDTO> findAll() {
-        return typeRepository.findAll().stream().map(typeMapper).collect(Collectors.toList());
+        return typeRepository.findAllByOrderByIdAsc()
+                .stream().map(typeMapper).collect(Collectors.toList());
     }
 
     @Override

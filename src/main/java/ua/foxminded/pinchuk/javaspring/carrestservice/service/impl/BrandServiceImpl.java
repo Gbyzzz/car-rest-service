@@ -39,7 +39,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public List<BrandDTO> findAll() {
-        return brandRepository.findAll().stream().map(brandMapper)
+        return brandRepository.findAllByOrderByIdAsc().stream().map(brandMapper)
                 .collect(Collectors.toList());
     }
 

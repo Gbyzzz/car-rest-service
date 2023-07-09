@@ -5,15 +5,11 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springdoc.core.annotations.RouterOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ua.foxminded.pinchuk.javaspring.carrestservice.dto.CarDTO;
 import ua.foxminded.pinchuk.javaspring.carrestservice.dto.ModelDTO;
-import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Model;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.ModelService;
 
 import java.util.List;
@@ -30,12 +26,12 @@ public class ModelController {
     }
 
     @GetMapping("/{brand}")
-    @Operation(summary = "Get all models by brand")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    content = @Content(
-                            array = @ArraySchema(
-                                    arraySchema = @Schema(implementation = ModelDTO.class))))})
+    @Operation(summary = "Get all models by brand",
+            description = "Get all models by brand from db")
+    @ApiResponse(responseCode = "200",
+            content = @Content(
+                    array = @ArraySchema(
+                            schema = @Schema(implementation = ModelDTO.class))))
     List<ModelDTO> getAllModelsByBrand(@PathVariable String brand,
                                        @RequestParam(name = "year_min", required = false) Integer yearMin,
                                        @RequestParam(name = "year_max", required = false) Integer yearMax,
@@ -46,12 +42,12 @@ public class ModelController {
     }
 
     @GetMapping("/{brand}/{name}")
-    @Operation(summary = "Get models by brand and name")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    content = @Content(
-                            array = @ArraySchema
-                                    (arraySchema = @Schema(implementation = ModelDTO.class))))})
+    @Operation(summary = "Get models by brand and name",
+            description = "Get models by brand and name from db")
+    @ApiResponse(responseCode = "200",
+            content = @Content(mediaType = "application/json",
+                    array = @ArraySchema
+                            (schema = @Schema(implementation = ModelDTO.class))))
     List<ModelDTO> getAllByBrandAndModelName(@PathVariable String brand, @PathVariable String name,
                                              @RequestParam(name = "year_min", required = false) Integer yearMin,
                                              @RequestParam(name = "year_max", required = false) Integer yearMax,
@@ -62,38 +58,47 @@ public class ModelController {
     }
 
     @GetMapping("/{brand}/{name}/{year}")
-    @Operation(summary = "Get models by brand, name and year")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    content = @Content(
-                            schema = @Schema(implementation = ModelDTO.class)))})
+    @Operation(summary = "Get models by brand, name and year",
+            description = "Get models by brand, name and year from db")
+    @ApiResponse(responseCode = "200",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ModelDTO.class)))
     ModelDTO getAllByBrandAndModelNameAndYear(@PathVariable String brand, @PathVariable String name,
                                               @PathVariable Integer year) {
         return modelService.findAllByBrandAndNameAndYear(brand, name, year);
     }
 
     @PostMapping("/{brand}/{name}/{year}")
-    @Operation(summary = "Add model")
+    @PreAuthorize("hasAuthority('add:model')")
+    @Operation(summary = "Add model", description = "Add model to db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"add:model"})
-    @PreAuthorize("hasAnyAuthority('add:model')")
+    @ApiResponse(responseCode = "200")
+    @ApiResponse(responseCode = "401", description = "Unauthorized",
+            content = {@Content()})
     void addModel(@PathVariable String brand, @PathVariable String name,
                   @PathVariable Integer year, @RequestBody List<String> typeNames) {
         modelService.add(brand, name, year, typeNames);
     }
 
     @PutMapping("/{brand}/{name}/{year}")
-    @Operation(summary = "Update model")
+    @PreAuthorize("hasAuthority('update:model')")
+    @Operation(summary = "Update model", description = "Update existing model in db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"update:model"})
-    @PreAuthorize("hasAnyAuthority('update:model')")
+    @ApiResponse(responseCode = "200")
+    @ApiResponse(responseCode = "401", description = "Unauthorized",
+            content = {@Content()})
     void updateModel(@PathVariable String brand, @PathVariable String name,
-                   @PathVariable Integer year, @RequestBody List<String> typeNames) {
+                     @PathVariable Integer year, @RequestBody List<String> typeNames) {
         modelService.add(brand, name, year, typeNames);
     }
 
     @DeleteMapping("/{brand}/{name}/{year}")
-    @Operation(summary = "Delete model")
+    @PreAuthorize("hasAuthority('delete:model')")
+    @Operation(summary = "Delete model", description = "Delete existing model from db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"delete:model"})
-    @PreAuthorize("hasAnyAuthority('delete:model')")
+    @ApiResponse(responseCode = "200")
+    @ApiResponse(responseCode = "401", description = "Unauthorized",
+            content = {@Content()})
     void deleteModel(@PathVariable String brand, @PathVariable String name,
                      @PathVariable Integer year) {
         modelService.remove(brand, name, year);

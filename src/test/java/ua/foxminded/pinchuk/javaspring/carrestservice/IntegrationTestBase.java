@@ -16,12 +16,6 @@ import ua.foxminded.pinchuk.javaspring.carrestservice.initializer.Postgres;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-//@RunWith(SpringRunner.class)
-//@ComponentScan(includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE,
-//        classes = {CourseRepository.class, ScheduleRepository.class, UserRepository.class,
-//        UserService.class, AdminController.class}))
-//@SpringBootTest
-//@AutoConfigureMockMvc
 @ContextConfiguration(initializers = {
         Postgres.Initializer.class
 })

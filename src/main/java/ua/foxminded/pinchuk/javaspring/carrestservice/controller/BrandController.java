@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,46 +26,56 @@ public class BrandController {
     }
 
     @GetMapping("")
-    @Operation(summary = "Get all brands")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    content = @Content(
-                            array = @ArraySchema(
-                                    arraySchema = @Schema(implementation = BrandDTO.class))))})
+    @Operation(summary = "Get all brands", description = "Get all brands from db")
+    @ApiResponse(responseCode = "200",
+            content = @Content(mediaType = "application/json",
+                    array = @ArraySchema(
+                            schema = @Schema(implementation = BrandDTO.class))))
     List<BrandDTO> getAllBrands() {
         return brandService.findAll();
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get brand by id", description = "Brand must exist")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    content = @Content(
-                            schema = @Schema(implementation = BrandDTO.class)))})
+    @Operation(summary = "Get brand by id",
+            description = "Get brand by id from db. Brand must exist")
+    @ApiResponse(responseCode = "200",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = BrandDTO.class)))
+    @ApiResponse(responseCode = "500", description = "Internal Server Error. Not valid id",
+            content = @Content())
     BrandDTO getBrandById(@PathVariable Long id) throws Exception {
         return brandService.findById(id);
     }
 
     @PostMapping("")
-    @Operation(summary = "Add brand")
+    @PreAuthorize("hasAuthority('add:brand')")
+    @Operation(summary = "Add brand", description = "Add brand to db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"add:brand"})
-    @PreAuthorize("hasAnyAuthority('add:brand')")
+    @ApiResponse(responseCode = "200")
+    @ApiResponse(responseCode = "401", description = "Unauthorized",
+            content = {@Content()})
     void addBrand(@RequestBody Brand brand) {
         brandService.saveOrUpdate(brand);
     }
 
     @PutMapping("")
-    @Operation(summary = "Update brand")
-    @SecurityRequirement(name = "bearerAuth", scopes = {"update:brand"})
     @PreAuthorize("hasAuthority('update:brand')")
+    @Operation(summary = "Update brand", description = "Update existing brand in db")
+    @SecurityRequirement(name = "bearerAuth", scopes = {"update:brand"})
+    @ApiResponse(responseCode = "200")
+    @ApiResponse(responseCode = "401", description = "Unauthorized",
+            content = {@Content()})
     void updateBrand(@RequestBody Brand brand) {
         brandService.saveOrUpdate(brand);
     }
 
     @DeleteMapping("")
-    @Operation(summary = "Delete brand", description = "Delete brand")
+    @PreAuthorize("hasAuthority('delete:brand')")
+    @Operation(summary = "Delete brand", description = "Delete existing brand from db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"delete:brand"})
-    @PreAuthorize("hasAnyAuthority('delete:brand')")
+    @ApiResponse(responseCode = "200")
+    @ApiResponse(responseCode = "401", description = "Unauthorized",
+            content = {@Content()})
     void deleteBrand(@RequestBody Brand brand) {
         brandService.remove(brand);
     }
