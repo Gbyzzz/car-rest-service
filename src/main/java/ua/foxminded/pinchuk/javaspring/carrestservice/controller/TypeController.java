@@ -26,7 +26,7 @@ public class TypeController {
         this.typeService = typeService;
     }
 
-    @GetMapping("")
+    @GetMapping
     @Operation(summary = "Get all types", description = "Get all types from db")
     @ApiResponse(responseCode = "200",
             content = @Content(mediaType = "application/json",
@@ -48,7 +48,7 @@ public class TypeController {
         return typeService.findById(id);
     }
 
-    @PostMapping("")
+    @PostMapping
     @PreAuthorize("hasAuthority('add:type')")
     @Operation(summary = "Add type", description = "Add type to db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"add:type"})
@@ -59,7 +59,7 @@ public class TypeController {
         typeService.saveOrUpdate(type);
     }
 
-    @PutMapping("")
+    @PutMapping
     @PreAuthorize("hasAuthority('update:type')")
     @Operation(summary = "Update type", description = "Update existing type in db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"update:type"})
@@ -70,7 +70,7 @@ public class TypeController {
         typeService.saveOrUpdate(type);
     }
 
-    @DeleteMapping("")
+    @DeleteMapping
     @PreAuthorize("hasAuthority('delete:type')")
     @Operation(summary = "Delete type", description = "Delete existing type from db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"delete:type"})

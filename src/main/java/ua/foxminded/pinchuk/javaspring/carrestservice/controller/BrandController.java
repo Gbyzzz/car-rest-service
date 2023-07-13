@@ -16,7 +16,7 @@ import ua.foxminded.pinchuk.javaspring.carrestservice.service.BrandService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/manufacturer")
+@RequestMapping("/api/v1/manufacturer/brand")
 @Tag(name = "Brand API")
 public class BrandController {
     private final BrandService brandService;
@@ -25,7 +25,7 @@ public class BrandController {
         this.brandService = brandService;
     }
 
-    @GetMapping("")
+    @GetMapping
     @Operation(summary = "Get all brands", description = "Get all brands from db")
     @ApiResponse(responseCode = "200",
             content = @Content(mediaType = "application/json",
@@ -47,7 +47,7 @@ public class BrandController {
         return brandService.findById(id);
     }
 
-    @PostMapping("")
+    @PostMapping
     @PreAuthorize("hasAuthority('add:brand')")
     @Operation(summary = "Add brand", description = "Add brand to db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"add:brand"})
@@ -58,7 +58,7 @@ public class BrandController {
         brandService.saveOrUpdate(brand);
     }
 
-    @PutMapping("")
+    @PutMapping
     @PreAuthorize("hasAuthority('update:brand')")
     @Operation(summary = "Update brand", description = "Update existing brand in db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"update:brand"})
@@ -69,7 +69,7 @@ public class BrandController {
         brandService.saveOrUpdate(brand);
     }
 
-    @DeleteMapping("")
+    @DeleteMapping
     @PreAuthorize("hasAuthority('delete:brand')")
     @Operation(summary = "Delete brand", description = "Delete existing brand from db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"delete:brand"})

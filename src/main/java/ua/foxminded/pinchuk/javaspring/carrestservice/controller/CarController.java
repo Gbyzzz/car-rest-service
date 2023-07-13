@@ -26,7 +26,7 @@ public class CarController {
         this.carService = carService;
     }
 
-    @GetMapping("")
+    @GetMapping
     @Operation(summary = "Get all cars", description = "Get all cars from db")
     @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json",
             array = @ArraySchema(schema = @Schema(implementation = CarDTO.class))))
@@ -57,7 +57,7 @@ public class CarController {
         return carService.findById(id);
     }
 
-    @PostMapping("")
+    @PostMapping
     @PreAuthorize("hasAuthority('add:car')")
     @Operation(summary = "Add car", description = "Add car to db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"add:car"})
@@ -68,7 +68,7 @@ public class CarController {
         carService.saveOrUpdate(car);
     }
 
-    @PutMapping("")
+    @PutMapping
     @PreAuthorize("hasAuthority('update:car')")
     @Operation(summary = "Update car", description = "Update existing car in db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"update:car"})
@@ -79,7 +79,7 @@ public class CarController {
         carService.saveOrUpdate(car);
     }
 
-    @DeleteMapping("")
+    @DeleteMapping
     @PreAuthorize("hasAuthority('delete:car')")
     @Operation(summary = "Delete car", description = "Delete existing car from db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"delete:car"})
