@@ -10,6 +10,7 @@ import java.util.Objects;
                 columnNames={"model_id", "type_id"}))
 public class CarModelType {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 

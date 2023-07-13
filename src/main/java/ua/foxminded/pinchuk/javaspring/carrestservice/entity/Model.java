@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "model")
+@Table(name = "model",
+        uniqueConstraints=
+@UniqueConstraint(
+        columnNames={"brand_id", "year", "name"}))
 public class Model {
 
     @Id
