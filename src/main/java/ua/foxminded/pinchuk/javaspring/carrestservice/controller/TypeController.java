@@ -55,7 +55,7 @@ public class TypeController {
     @ApiResponse(responseCode = "200")
     @ApiResponse(responseCode = "401", description = "Unauthorized",
             content = {@Content()})
-    void addType(@RequestBody Type type) throws Exception {
+    void addType(@RequestBody Type type) {
         typeService.saveOrUpdate(type);
     }
 
@@ -66,7 +66,7 @@ public class TypeController {
     @ApiResponse(responseCode = "200")
     @ApiResponse(responseCode = "401", description = "Unauthorized",
             content = {@Content()})
-    void updateType(@RequestBody Type type) throws Exception {
+    void updateType(@RequestBody Type type) {
         typeService.saveOrUpdate(type);
     }
 
@@ -77,7 +77,7 @@ public class TypeController {
     @ApiResponse(responseCode = "200")
     @ApiResponse(responseCode = "401", description = "Unauthorized",
             content = {@Content()})
-    void deleteType(@PathVariable String name) throws Exception {
+    void deleteType(@PathVariable String name) {
         typeService.removeByName(name);
     }
 }

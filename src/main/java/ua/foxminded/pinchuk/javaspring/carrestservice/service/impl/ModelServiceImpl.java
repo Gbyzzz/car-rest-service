@@ -11,6 +11,7 @@ import ua.foxminded.pinchuk.javaspring.carrestservice.repository.ModelRepository
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.BrandService;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.ModelService;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.TypeService;
+import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +39,9 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public ModelDTO findById(String id) throws Exception {
+    public ModelDTO findById(String id) throws ItemNotFoundException {
         return modelRepository.findById(id).map(modelMapper).orElseThrow(
-                () -> new Exception("Model with id " + id +
+                () -> new ItemNotFoundException("Model with id " + id +
                         " not found"));
     }
 

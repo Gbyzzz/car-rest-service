@@ -7,6 +7,7 @@ import ua.foxminded.pinchuk.javaspring.carrestservice.dto.mapper.BrandMapper;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Brand;
 import ua.foxminded.pinchuk.javaspring.carrestservice.repository.BrandRepository;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.BrandService;
+import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemNotFoundException;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,9 +24,9 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public BrandDTO findById(Long id) throws Exception {
+    public BrandDTO findById(Long id) throws ItemNotFoundException {
         return brandRepository.findById(id).map(brandMapper).orElseThrow(
-                ()->new Exception("Brand with id " + id + " not found"));
+                ()->new ItemNotFoundException("Brand with id " + id + " not found"));
     }
 
     @Override

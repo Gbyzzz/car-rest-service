@@ -12,6 +12,7 @@ import ua.foxminded.pinchuk.javaspring.carrestservice.dto.mapper.CarMapper;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Car;
 import ua.foxminded.pinchuk.javaspring.carrestservice.repository.CarRepository;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.CarService;
+import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +33,9 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public CarDTO findById(Long id) throws Exception {
+    public CarDTO findById(Long id) throws ItemNotFoundException {
         return carRepository.findById(id).map(carMapper).orElseThrow(
-                ()->new Exception("Car with id " + id + " not found"));
+                ()->new ItemNotFoundException("Car with id " + id + " not found"));
     }
 
     @Override

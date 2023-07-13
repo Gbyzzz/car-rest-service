@@ -7,6 +7,7 @@ import ua.foxminded.pinchuk.javaspring.carrestservice.dto.mapper.TypeMapper;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Type;
 import ua.foxminded.pinchuk.javaspring.carrestservice.repository.TypeRepository;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.TypeService;
+import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemNotFoundException;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,9 +24,9 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    public TypeDTO findById(Long id) throws Exception {
+    public TypeDTO findById(Long id) throws ItemNotFoundException {
         return typeRepository.findById(id).map(typeMapper).orElseThrow(
-                () -> new Exception("Type with id " + id +
+                () -> new ItemNotFoundException("Type with id " + id +
                         " not found"));
     }
 
