@@ -1,5 +1,6 @@
 package ua.foxminded.pinchuk.javaspring.carrestservice.service.impl;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import ua.foxminded.pinchuk.javaspring.carrestservice.dto.BrandDTO;
 import ua.foxminded.pinchuk.javaspring.carrestservice.dto.mapper.BrandMapper;
@@ -7,7 +8,7 @@ import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Brand;
 import ua.foxminded.pinchuk.javaspring.carrestservice.repository.BrandRepository;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.BrandService;
 
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,14 +34,15 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public void remove(Brand brand) {
-        brandRepository.delete(brand);
+    @Transactional
+    public void removeByName(String name) {
+        brandRepository.removeBrandByNameIgnoreCase(name);
     }
 
     @Override
-    public List<BrandDTO> findAll() {
+    public Set<BrandDTO> findAll() {
         return brandRepository.findAllByOrderByIdAsc().stream().map(brandMapper)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     @Override

@@ -25,8 +25,8 @@ CREATE TABLE type
 CREATE TABLE car_model_type
 (
     id           bigserial PRIMARY KEY,
-    model_id     varchar(10) REFERENCES model(id),
-    type_id      bigint REFERENCES type(id),
+        model_id     varchar(10) REFERENCES model(id) ON DELETE CASCADE,
+    type_id      bigint REFERENCES type(id) ON DELETE CASCADE,
     UNIQUE (model_id, type_id)
 );
 
@@ -34,7 +34,7 @@ CREATE TABLE car_model_type
 CREATE TABLE cars
 (
     id                 bigserial PRIMARY KEY,
-    car_model_type_id  bigint REFERENCES car_model_type(id),
+    car_model_type_id  bigint REFERENCES car_model_type(id) ON DELETE CASCADE,
     car_color          varchar(15),
     car_plate          varchar(10) UNIQUE
 );

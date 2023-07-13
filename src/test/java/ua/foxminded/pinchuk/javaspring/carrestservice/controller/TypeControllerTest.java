@@ -34,7 +34,8 @@ class TypeControllerTest  extends IntegrationTestBase {
     @Test
     void getAllTypes() throws Exception {
 
-        String expectedJson = new ObjectMapper().writeValueAsString(Source.types.stream().map(mapper).collect(Collectors.toList()));
+        String expectedJson = new ObjectMapper().writeValueAsString(Source.types.stream()
+                .map(mapper).collect(Collectors.toSet()));
         MvcResult result = mvc.perform(get("/api/v1/types")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

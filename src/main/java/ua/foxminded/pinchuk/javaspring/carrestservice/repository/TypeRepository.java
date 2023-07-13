@@ -12,4 +12,6 @@ public interface TypeRepository extends JpaRepository<Type, Long> {
     Type findTypeByName(String typeName);
     List<Type> findAllByOrderByIdAsc();
 
+    void removeTypeByNameIgnoreCase(String name);
+
 }

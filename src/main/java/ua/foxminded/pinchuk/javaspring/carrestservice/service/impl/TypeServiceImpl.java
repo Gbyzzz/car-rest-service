@@ -1,5 +1,6 @@
 package ua.foxminded.pinchuk.javaspring.carrestservice.service.impl;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import ua.foxminded.pinchuk.javaspring.carrestservice.dto.TypeDTO;
 import ua.foxminded.pinchuk.javaspring.carrestservice.dto.mapper.TypeMapper;
@@ -7,7 +8,7 @@ import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Type;
 import ua.foxminded.pinchuk.javaspring.carrestservice.repository.TypeRepository;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.TypeService;
 
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,14 +35,15 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    public void remove(Type type) {
-        typeRepository.delete(type);
+    @Transactional
+    public void removeByName(String name) {
+        typeRepository.removeTypeByNameIgnoreCase(name);
     }
 
     @Override
-    public List<TypeDTO> findAll() {
+    public Set<TypeDTO> findAll() {
         return typeRepository.findAllByOrderByIdAsc()
-                .stream().map(typeMapper).collect(Collectors.toList());
+                .stream().map(typeMapper).collect(Collectors.toSet());
     }
 
     @Override

@@ -13,7 +13,7 @@ import ua.foxminded.pinchuk.javaspring.carrestservice.dto.BrandDTO;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Brand;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.BrandService;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/manufacturer/brand")
@@ -31,7 +31,7 @@ public class BrandController {
             content = @Content(mediaType = "application/json",
                     array = @ArraySchema(
                             schema = @Schema(implementation = BrandDTO.class))))
-    List<BrandDTO> getAllBrands() {
+    Set<BrandDTO> getAllBrands() {
         return brandService.findAll();
     }
 
@@ -69,14 +69,14 @@ public class BrandController {
         brandService.saveOrUpdate(brand);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{brand}")
     @PreAuthorize("hasAuthority('delete:brand')")
     @Operation(summary = "Delete brand", description = "Delete existing brand from db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"delete:brand"})
     @ApiResponse(responseCode = "200")
     @ApiResponse(responseCode = "401", description = "Unauthorized",
             content = {@Content()})
-    void deleteBrand(@RequestBody Brand brand) {
-        brandService.remove(brand);
+    void deleteBrand(@PathVariable String brand) {
+        brandService.removeByName(brand);
     }
 }

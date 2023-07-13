@@ -13,7 +13,7 @@ import ua.foxminded.pinchuk.javaspring.carrestservice.dto.TypeDTO;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Type;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.TypeService;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/types")
@@ -32,7 +32,7 @@ public class TypeController {
             content = @Content(mediaType = "application/json",
                     array = @ArraySchema(
                             schema = @Schema(implementation = TypeDTO.class))))
-    List<TypeDTO> getAllTypes() {
+    Set<TypeDTO> getAllTypes() {
         return typeService.findAll();
     }
 
@@ -70,14 +70,14 @@ public class TypeController {
         typeService.saveOrUpdate(type);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{name}")
     @PreAuthorize("hasAuthority('delete:type')")
     @Operation(summary = "Delete type", description = "Delete existing type from db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"delete:type"})
     @ApiResponse(responseCode = "200")
     @ApiResponse(responseCode = "401", description = "Unauthorized",
             content = {@Content()})
-    void deleteType(@RequestBody Type type) throws Exception {
-        typeService.remove(type);
+    void deleteType(@PathVariable String name) throws Exception {
+        typeService.removeByName(name);
     }
 }
