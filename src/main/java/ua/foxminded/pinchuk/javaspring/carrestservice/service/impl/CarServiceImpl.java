@@ -6,6 +6,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import ua.foxminded.pinchuk.javaspring.carrestservice.dto.CarDTO;
 import ua.foxminded.pinchuk.javaspring.carrestservice.dto.mapper.CarMapper;
@@ -44,6 +45,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    @Transactional
     public void remove(Car car) {
         carRepository.delete(car);
     }

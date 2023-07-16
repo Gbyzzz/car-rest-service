@@ -11,12 +11,16 @@ import java.sql.SQLException;
 
 public class V2___ImportData extends BaseJavaMigration {
 
-//    private final ResourceLoader resourceLoader;
-
     private static final String COMMA_DELIMITER = ",";
+    private static final String QUOTATION_MARK = "\"";
+    private static final String SPACE = " ";
+    private static final String EMPTY = "";
     private static String [] lineValues;
-    private static int brandId;
-    private static int typeId;
+    private static final int MODEL_ID = 0;
+    private static final int BRAND = 1;
+    private static final int YEAR = 2;
+    private static final int MODEL_NAME = 3;
+    private static final int TYPES_START = 4;
     private static final String SQL_ADD_BRAND = "INSERT INTO brand (name)" +
             " values (?) ON CONFLICT (name) DO UPDATE SET name = ? RETURNING id;";
     private static final String SQL_UPDATE_BRAND_SEQ = " SELECT setval('brand_id_seq', " +
@@ -33,22 +37,22 @@ public class V2___ImportData extends BaseJavaMigration {
 
     @Override
     public void migrate(Context context) throws Exception {
-
-//        Resource resource = resourceLoader.getResource("classpath:import/cars.csv");
-
+        int brandId;
+        int typeId;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(getClass()
                 .getResourceAsStream("/import/cars.csv")))) {
             String line;
             br.readLine();
             while ((line = br.readLine()) != null) {
                 lineValues = line.split(COMMA_DELIMITER);
-                brandId = insertOneParam(context, SQL_ADD_BRAND, lineValues[1]);
+                brandId = insertOneParam(context, SQL_ADD_BRAND, lineValues[BRAND]);
                 updateSeq(context, SQL_UPDATE_BRAND_SEQ);
-                insertIntoModel(context);
-                for (int i = 4; i < lineValues.length; i++) {
-                    typeId = insertOneParam(context, SQL_ADD_TYPE, lineValues[i].replace("\"", "").replace(" ", ""));
+                insertIntoModel(context, brandId);
+                for (int i = TYPES_START; i < lineValues.length; i++) {
+                    typeId = insertOneParam(context, SQL_ADD_TYPE, lineValues[i]
+                            .replace(QUOTATION_MARK, EMPTY).replace(SPACE, EMPTY));
                     updateSeq(context, SQL_UPDATE_TYPE_SEQ);
-                    insertIntoCarModelType(context);
+                    insertIntoCarModelType(context, typeId);
                 }
             }
         }
@@ -81,23 +85,23 @@ public class V2___ImportData extends BaseJavaMigration {
         }
     }
 
-    private void insertIntoModel(Context context) {
+    private void insertIntoModel(Context context, int brandId) {
         try(PreparedStatement statement = context.getConnection()
                 .prepareStatement(SQL_ADD_MODEL)) {
-            statement.setString(1, lineValues[0]);
+            statement.setString(1, lineValues[MODEL_ID]);
             statement.setInt(2, brandId);
-            statement.setInt(3, Integer.parseInt(lineValues[2]));
-            statement.setString(4, lineValues[3]);
+            statement.setInt(3, Integer.parseInt(lineValues[YEAR]));
+            statement.setString(4, lineValues[MODEL_NAME]);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void insertIntoCarModelType(Context context) {
+    private void insertIntoCarModelType(Context context, int typeId) {
         try (PreparedStatement statement = context.getConnection()
                 .prepareStatement(SQL_ADD_CAR_MODEL_TYPE)) {
-            statement.setString(1, lineValues[0]);
+            statement.setString(1, lineValues[MODEL_ID]);
             statement.setInt(2, typeId);
             statement.execute();
 

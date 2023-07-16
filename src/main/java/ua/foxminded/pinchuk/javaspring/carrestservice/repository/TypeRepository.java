@@ -5,13 +5,13 @@ import org.springframework.stereotype.Repository;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Type;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TypeRepository extends JpaRepository<Type, Long> {
 
-    Type findTypeByName(String typeName);
+    Optional<Type> findTypeByNameIgnoreCase(String typeName);
     List<Type> findAllByOrderByIdAsc();
-
     void removeTypeByNameIgnoreCase(String name);
-
+    boolean existsTypeByNameIgnoreCase(String name);
 }

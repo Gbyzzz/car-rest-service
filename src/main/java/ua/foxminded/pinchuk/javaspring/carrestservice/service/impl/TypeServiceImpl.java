@@ -7,6 +7,7 @@ import ua.foxminded.pinchuk.javaspring.carrestservice.dto.mapper.TypeMapper;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Type;
 import ua.foxminded.pinchuk.javaspring.carrestservice.repository.TypeRepository;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.TypeService;
+import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemAlreadyExists;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemNotFoundException;
 
 import java.util.Set;
@@ -31,8 +32,9 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    public void saveOrUpdate(Type type) {
-        typeRepository.save(type);
+    @Transactional
+    public void update(TypeDTO typeDTO) {
+        typeRepository.save(typeMapper.apply(typeDTO));
     }
 
     @Override
@@ -48,7 +50,23 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    public Type findByName(String typeName) {
-        return typeRepository.findTypeByName(typeName);
+    public Type findByName(String typeName) throws ItemNotFoundException {
+        return typeRepository.findTypeByNameIgnoreCase(typeName).orElseThrow(
+                () -> new ItemNotFoundException("Type with name " + typeName +
+                        " not found")
+        );
+    }
+
+    @Override
+    public Type add(String name) throws ItemAlreadyExists {
+        if (typeExistsName(name)) {
+            throw new ItemAlreadyExists("Type with name " + name + " already exists in db");
+        }
+        return typeRepository.save(new Type(name));
+    }
+
+    @Override
+    public boolean typeExistsName(String name) {
+        return typeRepository.existsTypeByNameIgnoreCase(name);
     }
 }

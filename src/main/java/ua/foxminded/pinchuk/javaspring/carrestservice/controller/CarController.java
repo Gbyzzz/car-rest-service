@@ -30,20 +30,22 @@ public class CarController {
     @Operation(summary = "Get all cars", description = "Get all cars from db")
     @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json",
             array = @ArraySchema(schema = @Schema(implementation = CarDTO.class))))
-    @ApiResponse(responseCode = "401", description = "Unauthorized",
+    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
             content = {@Content()})
     @SecurityRequirement(name = "bearerAuth", scopes = {"read:car"})
     @PreAuthorize("hasAuthority('read:car')")
-    List<CarDTO> getCars(@RequestParam(name = "manufacturer", required = false) String brandName,
+    List<CarDTO> getCars(
+            @RequestParam(name = "brand", required = false) String brandName,
                          @RequestParam(name = "year_min", required = false) Integer yearMin,
                          @RequestParam(name = "year_max", required = false) Integer yearMax,
                          @RequestParam(name = "type", required = false) String type,
                          @RequestParam(name = "color", required = false) String color,
                          @RequestParam(name = "model_name", required = false) String modelName,
                          @RequestParam(name = "page", required = false) Integer page,
-                         @RequestParam(name = "page_size", required = false) Integer pageSize) {
-        return carService.searchCar(brandName, yearMin, yearMax, type,
-                color, modelName, page, pageSize);
+                         @RequestParam(name = "page_size", required = false) Integer pageSize
+            ) {
+        return carService.searchCar(brandName, yearMin, yearMax, type, color, modelName,
+                page, pageSize);
     }
 
     @GetMapping("/{id}")
@@ -62,7 +64,7 @@ public class CarController {
     @Operation(summary = "Add car", description = "Add car to db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"add:car"})
     @ApiResponse(responseCode = "200")
-    @ApiResponse(responseCode = "401", description = "Unauthorized",
+    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
             content = {@Content()})
     void addCar(@RequestBody Car car) {
         carService.saveOrUpdate(car);
@@ -73,7 +75,7 @@ public class CarController {
     @Operation(summary = "Update car", description = "Update existing car in db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"update:car"})
     @ApiResponse(responseCode = "200")
-    @ApiResponse(responseCode = "401", description = "Unauthorized",
+    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
             content = {@Content()})
     void updateCar(@RequestBody Car car) {
         carService.saveOrUpdate(car);
@@ -84,7 +86,7 @@ public class CarController {
     @Operation(summary = "Delete car", description = "Delete existing car from db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"delete:car"})
     @ApiResponse(responseCode = "200")
-    @ApiResponse(responseCode = "401", description = "Unauthorized",
+    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
             content = {@Content()})
     void deleteCar(@RequestBody Car car) {
         carService.remove(car);

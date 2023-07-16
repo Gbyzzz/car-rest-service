@@ -2,6 +2,8 @@ package ua.foxminded.pinchuk.javaspring.carrestservice.service;
 
 import ua.foxminded.pinchuk.javaspring.carrestservice.dto.ModelDTO;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Model;
+import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemAlreadyExists;
+import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemNotFoundException;
 
 import java.util.List;
 
@@ -10,14 +12,11 @@ public interface ModelService {
     void saveOrUpdate(Model model);
     void remove(Model model);
     List<ModelDTO> findAll();
-    List<ModelDTO> findAllByBrand(String brand);
 
-    List<ModelDTO> findAllByBrandAndName(String brand, String name);
+    ModelDTO findAllByBrandAndNameAndYear(String brand, String name, Integer year) throws ItemNotFoundException;
 
-    ModelDTO findAllByBrandAndNameAndYear(String brand, String name, Integer year);
+    void add(String brandName, String name, Integer year, List<String> typeNames) throws ItemNotFoundException, ItemAlreadyExists;
 
-    void add(String brandName, String name, Integer year, List<String> typeNames);
-
-    void remove(String brand, String name, Integer year);
-    List<ModelDTO> searchModel(String brand, String name, Integer yearMin, Integer yearMax, String type, Integer page, Integer pageSize);
+    void remove(String brand, String name, Integer year) throws ItemNotFoundException;
+    List<ModelDTO> searchModel(String brand, String name, Integer yearMin, Integer yearMax, String type, Integer page, Integer pageSize) throws ItemNotFoundException;
 }

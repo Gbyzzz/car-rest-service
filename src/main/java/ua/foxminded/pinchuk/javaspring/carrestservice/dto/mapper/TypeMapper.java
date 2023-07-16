@@ -12,4 +12,7 @@ public class TypeMapper implements Function<Type, TypeDTO> {
     public TypeDTO apply(Type type) {
         return new TypeDTO(type.getId(), type.getName());
     }
+    public Type apply(TypeDTO type) {
+        return new Type(type.id(), type.name());
+    }
 }

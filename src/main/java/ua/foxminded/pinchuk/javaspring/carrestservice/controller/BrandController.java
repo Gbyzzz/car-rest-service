@@ -10,13 +10,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.pinchuk.javaspring.carrestservice.dto.BrandDTO;
-import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Brand;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.BrandService;
+import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemAlreadyExists;
 
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/v1/manufacturer/brand")
+@RequestMapping("/api/v1/brand")
 @Tag(name = "Brand API")
 public class BrandController {
     private final BrandService brandService;
@@ -41,7 +41,7 @@ public class BrandController {
     @ApiResponse(responseCode = "200",
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = BrandDTO.class)))
-    @ApiResponse(responseCode = "500", description = "Internal Server Error. Not valid id",
+    @ApiResponse(responseCode = "400", description = "Bad Request. Not valid id",
             content = @Content())
     BrandDTO getBrandById(@PathVariable Long id) throws Exception {
         return brandService.findById(id);
@@ -52,10 +52,13 @@ public class BrandController {
     @Operation(summary = "Add brand", description = "Add brand to db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"add:brand"})
     @ApiResponse(responseCode = "200")
-    @ApiResponse(responseCode = "401", description = "Unauthorized",
+    @ApiResponse(responseCode = "400",
+            description = "Bad Request. Brand with this name already exists",
+            content = @Content())
+    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
             content = {@Content()})
-    void addBrand(@RequestBody Brand brand) {
-        brandService.saveOrUpdate(brand);
+    void addBrand(@RequestBody String name) throws ItemAlreadyExists {
+        brandService.add(name);
     }
 
     @PutMapping
@@ -63,20 +66,20 @@ public class BrandController {
     @Operation(summary = "Update brand", description = "Update existing brand in db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"update:brand"})
     @ApiResponse(responseCode = "200")
-    @ApiResponse(responseCode = "401", description = "Unauthorized",
+    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
             content = {@Content()})
-    void updateBrand(@RequestBody Brand brand) {
-        brandService.saveOrUpdate(brand);
+    void updateBrand(@RequestBody BrandDTO brandDTO) {
+        brandService.update(brandDTO);
     }
 
-    @DeleteMapping("/{brand}")
+    @DeleteMapping("/{name}")
     @PreAuthorize("hasAuthority('delete:brand')")
     @Operation(summary = "Delete brand", description = "Delete existing brand from db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"delete:brand"})
     @ApiResponse(responseCode = "200")
-    @ApiResponse(responseCode = "401", description = "Unauthorized",
+    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
             content = {@Content()})
-    void deleteBrand(@PathVariable String brand) {
-        brandService.removeByName(brand);
+    void deleteBrand(@PathVariable String name) {
+        brandService.removeByName(name);
     }
 }

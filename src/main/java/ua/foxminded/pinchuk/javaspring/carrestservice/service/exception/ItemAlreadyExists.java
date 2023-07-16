@@ -1,7 +1,7 @@
 package ua.foxminded.pinchuk.javaspring.carrestservice.service.exception;
 
-public class ItemNotFoundException extends Exception {
-    public ItemNotFoundException(String message){
+public class ItemAlreadyExists extends Exception {
+    public ItemAlreadyExists(String message){
         super(message);
     }
 }

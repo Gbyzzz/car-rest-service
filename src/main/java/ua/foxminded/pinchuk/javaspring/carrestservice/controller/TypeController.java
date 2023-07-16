@@ -10,13 +10,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.pinchuk.javaspring.carrestservice.dto.TypeDTO;
-import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Type;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.TypeService;
+import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemAlreadyExists;
 
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/v1/types")
+@RequestMapping("/api/v1/type")
 @Tag(name = "Type API")
 public class TypeController {
 
@@ -42,7 +42,7 @@ public class TypeController {
     @ApiResponse(responseCode = "200",
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = TypeDTO.class)))
-    @ApiResponse(responseCode = "500", description = "Internal Server Error. Not valid id",
+    @ApiResponse(responseCode = "400", description = "Bad Request. Not valid id",
             content = @Content())
     TypeDTO getTypeById(@PathVariable Long id) throws Exception {
         return typeService.findById(id);
@@ -53,10 +53,13 @@ public class TypeController {
     @Operation(summary = "Add type", description = "Add type to db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"add:type"})
     @ApiResponse(responseCode = "200")
-    @ApiResponse(responseCode = "401", description = "Unauthorized",
+    @ApiResponse(responseCode = "400",
+            description = "Bad Request. Type with this name already exists",
+            content = @Content())
+    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
             content = {@Content()})
-    void addType(@RequestBody Type type) {
-        typeService.saveOrUpdate(type);
+    void addType(@RequestBody String name) throws ItemAlreadyExists {
+        typeService.add(name);
     }
 
     @PutMapping
@@ -64,10 +67,10 @@ public class TypeController {
     @Operation(summary = "Update type", description = "Update existing type in db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"update:type"})
     @ApiResponse(responseCode = "200")
-    @ApiResponse(responseCode = "401", description = "Unauthorized",
+    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
             content = {@Content()})
-    void updateType(@RequestBody Type type) {
-        typeService.saveOrUpdate(type);
+    void updateType(@RequestBody TypeDTO typeDTO) {
+        typeService.update(typeDTO);
     }
 
     @DeleteMapping("/{name}")
@@ -75,7 +78,7 @@ public class TypeController {
     @Operation(summary = "Delete type", description = "Delete existing type from db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"delete:type"})
     @ApiResponse(responseCode = "200")
-    @ApiResponse(responseCode = "401", description = "Unauthorized",
+    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
             content = {@Content()})
     void deleteType(@PathVariable String name) {
         typeService.removeByName(name);

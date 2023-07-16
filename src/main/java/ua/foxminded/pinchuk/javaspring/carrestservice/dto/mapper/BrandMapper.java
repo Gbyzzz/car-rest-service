@@ -12,4 +12,8 @@ public class BrandMapper implements Function<Brand, BrandDTO> {
     public BrandDTO apply(Brand brand) {
         return new BrandDTO(brand.getId(), brand.getName());
     }
+    public Brand apply(BrandDTO brand) {
+        return new Brand(brand.id(), brand.name());
+    }
+
 }

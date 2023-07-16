@@ -19,6 +19,11 @@ public class Type {
     public Type() {
     }
 
+    public Type(String name) {
+        this.id = null;
+        this.name = name;
+    }
+
     public Type(Long id, String name) {
         this.id = id;
         this.name = name;

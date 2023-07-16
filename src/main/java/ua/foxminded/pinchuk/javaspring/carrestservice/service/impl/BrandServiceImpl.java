@@ -7,6 +7,7 @@ import ua.foxminded.pinchuk.javaspring.carrestservice.dto.mapper.BrandMapper;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Brand;
 import ua.foxminded.pinchuk.javaspring.carrestservice.repository.BrandRepository;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.BrandService;
+import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemAlreadyExists;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemNotFoundException;
 
 import java.util.Set;
@@ -30,8 +31,9 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public void saveOrUpdate(Brand brand) {
-        brandRepository.save(brand);
+    @Transactional
+    public void update(BrandDTO brandDTO) {
+        brandRepository.save(brandMapper.apply(brandDTO));
     }
 
     @Override
@@ -47,7 +49,21 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Brand findByName(String brandName) {
-        return brandRepository.findBrandByName(brandName);
+    public Brand findByName(String brandName) throws ItemNotFoundException {
+        return brandRepository.findBrandByNameIgnoreCase(brandName).orElseThrow(
+                ()->new ItemNotFoundException("Brand with name " + brandName + " not found"));
+    }
+
+    @Override
+    public Brand add(String name) throws ItemAlreadyExists {
+        if(brandExistsByName(name)){
+            throw new ItemAlreadyExists("Brand with name " + name + " already exists in db");
+        }
+       return brandRepository.save(new Brand(name));
+    }
+
+    @Override
+    public boolean brandExistsByName(String name) {
+        return brandRepository.existsBrandByNameIgnoreCase(name);
     }
 }
