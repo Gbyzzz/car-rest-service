@@ -11,7 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.pinchuk.javaspring.carrestservice.dto.TypeDTO;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.TypeService;
-import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemAlreadyExists;
+import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ServiceException;
 
 import java.util.Set;
 
@@ -56,9 +56,9 @@ public class TypeController {
     @ApiResponse(responseCode = "400",
             description = "Bad Request. Type with this name already exists",
             content = @Content())
-    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
+    @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
             content = {@Content()})
-    void addType(@RequestBody String name) throws ItemAlreadyExists {
+    void addType(@RequestBody String name) throws ServiceException {
         typeService.add(name);
     }
 
@@ -67,7 +67,7 @@ public class TypeController {
     @Operation(summary = "Update type", description = "Update existing type in db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"update:type"})
     @ApiResponse(responseCode = "200")
-    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
+    @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
             content = {@Content()})
     void updateType(@RequestBody TypeDTO typeDTO) {
         typeService.update(typeDTO);
@@ -78,7 +78,7 @@ public class TypeController {
     @Operation(summary = "Delete type", description = "Delete existing type from db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"delete:type"})
     @ApiResponse(responseCode = "200")
-    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
+    @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
             content = {@Content()})
     void deleteType(@PathVariable String name) {
         typeService.removeByName(name);

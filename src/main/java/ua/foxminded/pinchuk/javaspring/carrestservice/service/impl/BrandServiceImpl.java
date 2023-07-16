@@ -7,8 +7,7 @@ import ua.foxminded.pinchuk.javaspring.carrestservice.dto.mapper.BrandMapper;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Brand;
 import ua.foxminded.pinchuk.javaspring.carrestservice.repository.BrandRepository;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.BrandService;
-import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemAlreadyExists;
-import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemNotFoundException;
+import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ServiceException;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,9 +24,9 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public BrandDTO findById(Long id) throws ItemNotFoundException {
+    public BrandDTO findById(Long id) throws ServiceException {
         return brandRepository.findById(id).map(brandMapper).orElseThrow(
-                ()->new ItemNotFoundException("Brand with id " + id + " not found"));
+                ()->new ServiceException("Brand with id " + id + " not found"));
     }
 
     @Override
@@ -49,15 +48,15 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Brand findByName(String brandName) throws ItemNotFoundException {
+    public Brand findByName(String brandName) throws ServiceException {
         return brandRepository.findBrandByNameIgnoreCase(brandName).orElseThrow(
-                ()->new ItemNotFoundException("Brand with name " + brandName + " not found"));
+                ()->new ServiceException("Brand with name " + brandName + " not found"));
     }
 
     @Override
-    public Brand add(String name) throws ItemAlreadyExists {
+    public Brand add(String name) throws ServiceException {
         if(brandExistsByName(name)){
-            throw new ItemAlreadyExists("Brand with name " + name + " already exists in db");
+            throw new ServiceException("Brand with name " + name + " already exists in db");
         }
        return brandRepository.save(new Brand(name));
     }

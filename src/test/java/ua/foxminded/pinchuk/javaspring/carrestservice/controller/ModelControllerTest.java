@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import ua.foxminded.pinchuk.javaspring.carrestservice.IntegrationTestBase;
 import ua.foxminded.pinchuk.javaspring.carrestservice.Source;
+import ua.foxminded.pinchuk.javaspring.carrestservice.dto.ModelDTO;
 import ua.foxminded.pinchuk.javaspring.carrestservice.dto.mapper.ModelMapper;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Model;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Type;
@@ -83,14 +84,18 @@ class ModelControllerTest extends IntegrationTestBase {
     @Order(1)
     @WithMockUser(authorities = "add:model")
     void addModel() throws Exception {
-        String typesOfCar = new ObjectMapper().writeValueAsString(Source.model10.getTypes().stream()
-                .map(Type::getName).collect(Collectors.toList()));
-        mvc.perform(post("/api/v1/manufacturers/{brand}/{name}/{year}",
+        String typesOfCar = new ObjectMapper().writeValueAsString(Source.model10.getTypes()
+                .stream().map(Type::getName).collect(Collectors.toList()));
+        MvcResult result = mvc.perform(post("/api/v1/model/{brand}/{name}/{year}",
                         Source.model10.getBrand().getName(), Source.model10.getName(),
                         Source.model10.getYear()).
                         contentType(MediaType.APPLICATION_JSON)
                         .content(typesOfCar))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andReturn();
+        ObjectMapper objectMapper = new ObjectMapper();
+        Source.model10.setId(objectMapper.readValue(result.getResponse()
+                .getContentAsString(), ModelDTO.class).id());
         Source.models.add(Source.model10);
         assertEquals(Source.models.stream().map(mapper).collect(Collectors.toList()),
                 modelService.findAll());
@@ -101,13 +106,10 @@ class ModelControllerTest extends IntegrationTestBase {
     @WithMockUser(authorities = "update:model")
     void updateModel() throws Exception {
         Source.models.get(9).getTypes().add(Source.type3);
-        String typesOfCar = new ObjectMapper().writeValueAsString(Source.model10.getTypes().stream()
-                .map(Type::getName).collect(Collectors.toList()));
-        mvc.perform(put("/api/v1/manufacturers/{brand}/{name}/{year}",
-                        Source.model10.getBrand().getName(), Source.model10.getName(),
-                        Source.model10.getYear()).
+        String modelToUpdate = new ObjectMapper().writeValueAsString(mapper.apply(Source.model10));
+        mvc.perform(put("/api/v1/model").
                         contentType(MediaType.APPLICATION_JSON)
-                        .content(typesOfCar))
+                        .content(modelToUpdate))
                 .andExpect(status().isOk());
         assertEquals(Source.models.stream().map(mapper).collect(Collectors.toList()),
                 modelService.findAll());
@@ -117,7 +119,7 @@ class ModelControllerTest extends IntegrationTestBase {
     @Order(3)
     @WithMockUser(authorities = "delete:model")
     void deleteModel() throws Exception {
-        mvc.perform(delete("/api/v1/manufacturers/{brand}/{name}/{year}",
+        mvc.perform(delete("/api/v1/model/{brand}/{name}/{year}",
                         Source.model10.getBrand().getName(), Source.model10.getName(),
                         Source.model10.getYear()).
                         contentType(MediaType.APPLICATION_JSON))

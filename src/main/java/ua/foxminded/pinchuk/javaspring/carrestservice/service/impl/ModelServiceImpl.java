@@ -12,8 +12,7 @@ import ua.foxminded.pinchuk.javaspring.carrestservice.repository.ModelRepository
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.BrandService;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.ModelService;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.TypeService;
-import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemAlreadyExists;
-import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemNotFoundException;
+import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ServiceException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,15 +45,10 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public ModelDTO findById(String id) throws ItemNotFoundException {
+    public ModelDTO findById(String id) throws ServiceException {
         return modelRepository.findById(id).map(modelMapper).orElseThrow(
-                () -> new ItemNotFoundException("Model with id " + id +
+                () -> new ServiceException("Model with id " + id +
                         " not found"));
-    }
-
-    @Override
-    public void saveOrUpdate(Model model) {
-        modelRepository.save(model);
     }
 
     @Override
@@ -69,15 +63,35 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public ModelDTO findAllByBrandAndNameAndYear(String brand, String name, Integer year) throws ItemNotFoundException {
-        return modelRepository.getModelsByBrandNameIgnoreCaseAndNameIgnoreCaseAndYear(brand, name, year)
-                .map(modelMapper).orElseThrow(
-                        () -> new ItemNotFoundException("Model with brand " + brand + ", name " +
-                                name + ", and year " + year + " not found"));
+    public ModelDTO findAllByBrandAndNameAndYear(String brand, String name, Integer year)
+            throws ServiceException {
+        return modelRepository.getModelsByBrandNameIgnoreCaseAndNameIgnoreCaseAndYear(brand,
+                name, year).map(modelMapper).orElseThrow(
+                () -> new ServiceException("Model with brand " + brand + ", name " +
+                        name + ", and year " + year + " not found"));
     }
 
     @Override
-    public void add(String brandName, String name, Integer year, List<String> typeNames) throws ItemNotFoundException, ItemAlreadyExists {
+    public ModelDTO add(String brandName, String name, Integer year, List<String> typeNames) throws ServiceException {
+        Model model = makeModelToSave(brandName, name, year, typeNames);
+        String id = generateId();
+        while (modelRepository.existsById(id)) {
+            id = generateId();
+        }
+        model.setId(id);
+
+        return modelMapper.apply(modelRepository.save(model));
+    }
+
+    @Override
+    public ModelDTO update(ModelDTO modelDTO) throws ServiceException {
+        Model model = makeModelToSave(modelDTO.brand(), modelDTO.name(), modelDTO.year(),
+                modelDTO.types());
+        model.setId(modelDTO.id());
+        return modelMapper.apply(modelRepository.save(model));
+    }
+
+    private Model makeModelToSave(String brandName, String name, Integer year, List<String> typeNames) throws ServiceException {
         List<Type> typeList = new ArrayList<>();
         for (String typeName : typeNames) {
             if (typeService.typeExistsName(typeName)) {
@@ -92,32 +106,26 @@ public class ModelServiceImpl implements ModelService {
         } else {
             brand = brandService.add(brandName);
         }
-        String id = generateId();
-        while(modelRepository.existsById(id)){
-            id = generateId();
-        }
-        Model model = new Model(id, brand, year, name, typeList);
-
-        saveOrUpdate(model);
+        return new Model(null, brand, year, name, typeList);
     }
 
     @Override
     @Transactional
-    public void remove(String brand, String name, Integer year) throws ItemNotFoundException {
+    public void remove(String brand, String name, Integer year) throws ServiceException {
         remove(modelRepository.getModelsByBrandNameIgnoreCaseAndNameIgnoreCaseAndYear(brand, name, year)
-                .orElseThrow(() -> new ItemNotFoundException("Model with brand " + brand + ", name " +
+                .orElseThrow(() -> new ServiceException("Model with brand " + brand + ", name " +
                         name + ", and year " + year + " not found")));
     }
 
     @Override
     public List<ModelDTO> searchModel(String brandName, String name, Integer yearMin, Integer yearMax,
-                                      String type, Integer page, Integer pageSize) throws ItemNotFoundException {
+                                      String type, Integer page, Integer pageSize) throws ServiceException {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Model> criteriaQuery = criteriaBuilder.createQuery(Model.class);
         Root<Model> root = criteriaQuery.from(Model.class);
         List<Predicate> predicates = new ArrayList<>();
 
-        if(brandName != null) {
+        if (brandName != null) {
             predicates.add(criteriaBuilder.equal(
                     criteriaBuilder.lower(root.get("brand").get("name")), brandName.toLowerCase()));
         }
@@ -155,7 +163,7 @@ public class ModelServiceImpl implements ModelService {
         }
         if (query.getResultList().size() == 0) {
             brandService.findByName(brandName);
-            throw new ItemNotFoundException("No model was found with such filters");
+            throw new ServiceException("No model was found with such filters");
         }
         return query.getResultList().stream().map(modelMapper).collect(Collectors.toList());
     }

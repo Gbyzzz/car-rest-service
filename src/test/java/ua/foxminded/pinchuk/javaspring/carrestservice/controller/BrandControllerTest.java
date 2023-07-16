@@ -39,7 +39,7 @@ class BrandControllerTest extends IntegrationTestBase {
     void getAllBrands() throws Exception {
         String expectedJson = new ObjectMapper().writeValueAsString(Source.brands.stream().map(mapper)
                 .collect(Collectors.toSet()));
-        MvcResult result = mvc.perform(get("/api/v1/manufacturer/brand")
+        MvcResult result = mvc.perform(get("/api/v1/brand")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(Source.brands.size())))
@@ -53,7 +53,7 @@ class BrandControllerTest extends IntegrationTestBase {
     @ParameterizedTest
     @MethodSource("ua.foxminded.pinchuk.javaspring.carrestservice.Source#provideBrandById")
     void getBrandById(Brand brand, int id) throws Exception {
-        MvcResult result = mvc.perform(get("/api/v1/manufacturer/brand/{id}", id)
+        MvcResult result = mvc.perform(get("/api/v1/brand/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -66,10 +66,9 @@ class BrandControllerTest extends IntegrationTestBase {
     @Order(1)
     @WithMockUser(authorities = "add:brand")
     void addBrand() throws Exception {
-        String toAdd = new ObjectMapper().writeValueAsString(Source.brand4);
-        mvc.perform(post("/api/v1/manufacturer/brand")
+        mvc.perform(post("/api/v1/brand")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toAdd))
+                .content(Source.brand4.getName()))
                 .andExpect(status().isOk());
         Source.brands.add(Source.brand4);
         getAllBrands();
@@ -81,7 +80,7 @@ class BrandControllerTest extends IntegrationTestBase {
     void updateBrand() throws Exception {
         Source.brands.get(3).setName("Jeep");
         String toUpdate = new ObjectMapper().writeValueAsString(Source.brand4);
-        mvc.perform(put("/api/v1/manufacturer/brand").
+        mvc.perform(put("/api/v1/brand").
                 contentType(MediaType.APPLICATION_JSON)
                 .content(toUpdate))
                 .andExpect(status().isOk());
@@ -92,7 +91,7 @@ class BrandControllerTest extends IntegrationTestBase {
     @Order(3)
     @WithMockUser(authorities = "delete:brand")
     void deleteBrand() throws Exception {
-        mvc.perform(delete("/api/v1/manufacturer/brand/" + Source.brand4.getName()).
+        mvc.perform(delete("/api/v1/brand/" + Source.brand4.getName()).
                         contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         Source.brands.remove(3);

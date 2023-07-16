@@ -11,7 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.pinchuk.javaspring.carrestservice.dto.BrandDTO;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.BrandService;
-import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemAlreadyExists;
+import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ServiceException;
 
 import java.util.Set;
 
@@ -55,9 +55,9 @@ public class BrandController {
     @ApiResponse(responseCode = "400",
             description = "Bad Request. Brand with this name already exists",
             content = @Content())
-    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
+    @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
             content = {@Content()})
-    void addBrand(@RequestBody String name) throws ItemAlreadyExists {
+    void addBrand(@RequestBody String name) throws ServiceException {
         brandService.add(name);
     }
 
@@ -66,7 +66,7 @@ public class BrandController {
     @Operation(summary = "Update brand", description = "Update existing brand in db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"update:brand"})
     @ApiResponse(responseCode = "200")
-    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
+    @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
             content = {@Content()})
     void updateBrand(@RequestBody BrandDTO brandDTO) {
         brandService.update(brandDTO);
@@ -77,7 +77,7 @@ public class BrandController {
     @Operation(summary = "Delete brand", description = "Delete existing brand from db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"delete:brand"})
     @ApiResponse(responseCode = "200")
-    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
+    @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
             content = {@Content()})
     void deleteBrand(@PathVariable String name) {
         brandService.removeByName(name);

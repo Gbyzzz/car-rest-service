@@ -102,46 +102,46 @@ public class Source {
 
     public static Stream<Arguments> provideModelsByBrand() {
         return Stream.of(
-                Arguments.of("/api/v1/manufacturers/" + brand1.getName(),
+                Arguments.of("/api/v1/model/" + brand1.getName(),
                         new ArrayList<Model>() {{
                             add(model1);
                             add(model2);
                             add(model3);
                         }}),
-                Arguments.of("/api/v1/manufacturers/" + brand1.getName() +
+                Arguments.of("/api/v1/model/" + brand1.getName() +
                                 "?year_min=2021",
                         new ArrayList<Model>() {{
                             add(model2);
                             add(model3);
                         }}),
-                Arguments.of("/api/v1/manufacturers/" + brand1.getName() +
+                Arguments.of("/api/v1/model/" + brand1.getName() +
                                 "?year_max=2020",
                         new ArrayList<Model>() {{
                             add(model1);
                         }}),
-                Arguments.of("/api/v1/manufacturers/" + brand1.getName() +
+                Arguments.of("/api/v1/model/" + brand1.getName() +
                                 "?type=coupe",
                         new ArrayList<Model>() {{
                             add(model1);
                             add(model3);
                         }}),
-                Arguments.of("/api/v1/manufacturers/" + brand1.getName() +
+                Arguments.of("/api/v1/model/" + brand1.getName() +
                                 "?type=coupe&year_min=2021",
                         new ArrayList<Model>() {{
                             add(model3);
                         }}),
-                Arguments.of("/api/v1/manufacturers/" + brand2.getName() +
+                Arguments.of("/api/v1/model/" + brand2.getName() +
                                 "/" + model4.getName(),
                         new ArrayList<Model>() {{
                             add(model4);
                             add(model6);
                         }}),
-                Arguments.of("/api/v1/manufacturers/" + brand2.getName() +
+                Arguments.of("/api/v1/model/" + brand2.getName() +
                                 "/" + model4.getName() + "?type=coupe",
                         new ArrayList<Model>() {{
                             add(model6);
                         }}),
-                Arguments.of("/api/v1/manufacturers/" + brand2.getName() +
+                Arguments.of("/api/v1/model/" + brand2.getName() +
                                 "/" + model4.getName() + "?year_max=2020",
                         new ArrayList<Model>() {{
                             add(model4);
@@ -151,17 +151,17 @@ public class Source {
 
     public static Stream<Arguments> provideModelsByBrandAndName() {
         return Stream.of(
-                Arguments.of("/api/v1/manufacturers/" + brand1.getName() + "/C-Class",
+                Arguments.of("/api/v1/model/" + brand1.getName() + "/C-Class",
                         new ArrayList<Model>() {{
                             add(model1);
                             add(model2);
                         }}),
-                Arguments.of("/api/v1/manufacturers/" + brand2.getName() + "/420d",
+                Arguments.of("/api/v1/model/" + brand2.getName() + "/420d",
                         new ArrayList<Model>() {{
                             add(model4);
                             add(model6);
                         }}),
-                Arguments.of("/api/v1/manufacturers/" + brand3.getName() + "/A6",
+                Arguments.of("/api/v1/model/" + brand3.getName() + "/A6",
                         new ArrayList<Model>() {{
                             add(model8);
                             add(model9);
@@ -170,23 +170,23 @@ public class Source {
 
     public static Stream<Arguments> provideModelByBrandAndNameAndYear() {
         return Stream.of(
-                Arguments.of("/api/v1/manufacturers/" + model1.getBrand().getName() + "/"
+                Arguments.of("/api/v1/model/" + model1.getBrand().getName() + "/"
                         + model1.getName() + "/" + model1.getYear(), model1),
-                Arguments.of("/api/v1/manufacturers/" + model2.getBrand().getName() + "/"
+                Arguments.of("/api/v1/model/" + model2.getBrand().getName() + "/"
                         + model2.getName() + "/" + model2.getYear(), model2),
-                Arguments.of("/api/v1/manufacturers/" + model3.getBrand().getName() + "/"
+                Arguments.of("/api/v1/model/" + model3.getBrand().getName() + "/"
                         + model3.getName() + "/" + model3.getYear(), model3),
-                Arguments.of("/api/v1/manufacturers/" + model4.getBrand().getName() + "/"
+                Arguments.of("/api/v1/model/" + model4.getBrand().getName() + "/"
                         + model4.getName() + "/" + model4.getYear(), model4),
-                Arguments.of("/api/v1/manufacturers/" + model5.getBrand().getName() + "/"
+                Arguments.of("/api/v1/model/" + model5.getBrand().getName() + "/"
                         + model5.getName() + "/" + model5.getYear(), model5),
-                Arguments.of("/api/v1/manufacturers/" + model6.getBrand().getName() + "/"
+                Arguments.of("/api/v1/model/" + model6.getBrand().getName() + "/"
                         + model6.getName() + "/" + model6.getYear(), model6),
-                Arguments.of("/api/v1/manufacturers/" + model7.getBrand().getName() + "/"
+                Arguments.of("/api/v1/model/" + model7.getBrand().getName() + "/"
                         + model7.getName() + "/" + model7.getYear(), model7),
-                Arguments.of("/api/v1/manufacturers/" + model8.getBrand().getName() + "/"
+                Arguments.of("/api/v1/model/" + model8.getBrand().getName() + "/"
                         + model8.getName() + "/" + model8.getYear(), model8),
-                Arguments.of("/api/v1/manufacturers/" + model9.getBrand().getName() + "/"
+                Arguments.of("/api/v1/model/" + model9.getBrand().getName() + "/"
                         + model9.getName() + "/" + model9.getYear(), model9));
     }
 
@@ -204,7 +204,7 @@ public class Source {
 
     public static Stream<Arguments> provideCars() {
         return Stream.of(
-                Arguments.of("/api/v1/cars" + "?manufacturer=mercedes",
+                Arguments.of("/api/v1/cars" + "?brand=mercedes",
                         new ArrayList<Car>() {{
                             add(car1);
                             add(car3);

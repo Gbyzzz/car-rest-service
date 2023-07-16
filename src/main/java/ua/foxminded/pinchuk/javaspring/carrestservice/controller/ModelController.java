@@ -11,13 +11,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.pinchuk.javaspring.carrestservice.dto.ModelDTO;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.ModelService;
-import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemAlreadyExists;
-import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemNotFoundException;
+import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ServiceException;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/models")
+@RequestMapping("/api/v1/model")
 @Tag(name = "Model API")
 public class ModelController {
 
@@ -42,7 +41,7 @@ public class ModelController {
                                 @RequestParam(name = "type", required = false) String type,
                                 @RequestParam(name = "page", required = false) Integer page,
                                 @RequestParam(name = "page_size", required = false) Integer pageSize)
-            throws ItemNotFoundException {
+            throws ServiceException {
         return modelService.searchModel(null, null, yearMin, yearMax,
                 type, page, pageSize);
     }
@@ -61,7 +60,7 @@ public class ModelController {
                                        @RequestParam(name = "year_max", required = false) Integer yearMax,
                                        @RequestParam(name = "type", required = false) String type,
                                        @RequestParam(name = "page", required = false) Integer page,
-                                       @RequestParam(name = "page_size", required = false) Integer pageSize) throws ItemNotFoundException {
+                                       @RequestParam(name = "page_size", required = false) Integer pageSize) throws ServiceException {
         return modelService.searchModel(brand, null, yearMin, yearMax, type, page, pageSize);
     }
 
@@ -80,7 +79,7 @@ public class ModelController {
                                              @RequestParam(name = "year_max", required = false) Integer yearMax,
                                              @RequestParam(name = "type", required = false) String type,
                                              @RequestParam(name = "page", required = false) Integer page,
-                                             @RequestParam(name = "page_size", required = false) Integer pageSize) throws ItemNotFoundException {
+                                             @RequestParam(name = "page_size", required = false) Integer pageSize) throws ServiceException {
         return modelService.searchModel(brand, name, yearMin, yearMax, type, page, pageSize);
     }
 
@@ -94,7 +93,7 @@ public class ModelController {
             description = "Bad Request. Not valid brand and/or model name and/or year",
             content = @Content())
     ModelDTO getAllByBrandAndModelNameAndYear(@PathVariable String brand, @PathVariable String name,
-                                              @PathVariable Integer year) throws ItemNotFoundException {
+                                              @PathVariable Integer year) throws ServiceException {
         return modelService.findAllByBrandAndNameAndYear(brand, name, year);
     }
 
@@ -106,24 +105,28 @@ public class ModelController {
     @ApiResponse(responseCode = "400",
             description = "Bad Request. Not valid brand and/or type name(s)",
             content = @Content())
-    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
-            content = {@Content()})
-    void addModel(@PathVariable String brand, @PathVariable String name,
-                  @PathVariable Integer year, @RequestBody List<String> typeNames) throws ItemNotFoundException, ItemAlreadyExists {
-        modelService.add(brand, name, year, typeNames);
+    @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
+            content = {@Content(mediaType = "application/json",
+            schema = @Schema(implementation = ModelDTO.class))})
+    ModelDTO addModel(@PathVariable String brand, @PathVariable String name,
+                  @PathVariable Integer year, @RequestBody List<String> typeNames)
+            throws ServiceException {
+        return modelService.add(brand, name, year, typeNames);
     }
 
-    @PutMapping("/{brand}/{name}/{year}")
+    @PutMapping
     @PreAuthorize("hasAuthority('update:model')")
     @Operation(summary = "Update model", description = "Update existing model in db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"update:model"})
     @ApiResponse(responseCode = "200")
-    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
-            content = {@Content()})
-    void updateModel(@PathVariable String brand, @PathVariable String name,
-                     @PathVariable Integer year, @RequestBody List<String> typeNames)
-            throws ItemNotFoundException, ItemAlreadyExists {
-        modelService.add(brand, name, year, typeNames);
+    @ApiResponse(responseCode = "400",
+            description = "Bad Request. Not valid model id",
+            content = @Content())
+    @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ModelDTO.class))})
+    ModelDTO updateModel(@RequestBody ModelDTO modelDTO) throws ServiceException {
+        return modelService.update(modelDTO);
     }
 
     @DeleteMapping("/{brand}/{name}/{year}")
@@ -134,10 +137,10 @@ public class ModelController {
     @ApiResponse(responseCode = "400",
             description = "Bad Request. Not valid brand and/or model name and/or year",
             content = @Content())
-    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
+    @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
             content = {@Content()})
     void deleteModel(@PathVariable String brand, @PathVariable String name,
-                     @PathVariable Integer year) throws ItemNotFoundException {
+                     @PathVariable Integer year) throws ServiceException {
         modelService.remove(brand, name, year);
     }
 }

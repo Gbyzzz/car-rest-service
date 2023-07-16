@@ -36,7 +36,7 @@ class TypeControllerTest  extends IntegrationTestBase {
 
         String expectedJson = new ObjectMapper().writeValueAsString(Source.types.stream()
                 .map(mapper).collect(Collectors.toSet()));
-        MvcResult result = mvc.perform(get("/api/v1/types")
+        MvcResult result = mvc.perform(get("/api/v1/type")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(Source.types.size())))
@@ -50,7 +50,7 @@ class TypeControllerTest  extends IntegrationTestBase {
     @ParameterizedTest
     @MethodSource("ua.foxminded.pinchuk.javaspring.carrestservice.Source#provideTypesById")
     void getTypeById(Type type, int id) throws Exception {
-        MvcResult result = mvc.perform(get("/api/v1/types/{id}", id)
+        MvcResult result = mvc.perform(get("/api/v1/type/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -62,10 +62,9 @@ class TypeControllerTest  extends IntegrationTestBase {
     @Test
     @WithMockUser(authorities = "add:type")
     void addType() throws Exception {
-        String toAdd = new ObjectMapper().writeValueAsString(Source.type4);
-        mvc.perform(post("/api/v1/types").
+        mvc.perform(post("/api/v1/type").
                         contentType(MediaType.APPLICATION_JSON)
-                        .content(toAdd))
+                        .content(Source.type4.getName()))
                 .andExpect(status().isOk());
         Source.types.add(Source.type4);
         getAllTypes();
@@ -76,7 +75,7 @@ class TypeControllerTest  extends IntegrationTestBase {
     void updateType() throws Exception {
         Source.types.get(3).setName("Sport Utility Vehicle");
         String toUpdate = new ObjectMapper().writeValueAsString(Source.types.get(3));
-        mvc.perform(put("/api/v1/types").
+        mvc.perform(put("/api/v1/type").
                         contentType(MediaType.APPLICATION_JSON)
                         .content(toUpdate))
                 .andExpect(status().isOk());
@@ -87,7 +86,7 @@ class TypeControllerTest  extends IntegrationTestBase {
     @WithMockUser(authorities = "delete:type")
     void deleteType() throws Exception {
         String toDelete = new ObjectMapper().writeValueAsString(Source.types.get(3));
-        mvc.perform(delete("/api/v1/types").
+        mvc.perform(delete("/api/v1/type/" + Source.types.get(3).getName()).
                         contentType(MediaType.APPLICATION_JSON)
                         .content(toDelete))
                 .andExpect(status().isOk());

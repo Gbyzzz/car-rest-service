@@ -1,7 +1,7 @@
 package ua.foxminded.pinchuk.javaspring.carrestservice.service.exception;
 
-public class ItemAlreadyExists extends Exception {
-    public ItemAlreadyExists(String message){
+public class ServiceException extends Exception {
+    public ServiceException(String message){
         super(message);
     }
 }

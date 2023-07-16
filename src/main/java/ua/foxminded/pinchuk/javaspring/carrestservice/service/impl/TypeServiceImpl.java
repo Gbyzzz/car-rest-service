@@ -7,8 +7,7 @@ import ua.foxminded.pinchuk.javaspring.carrestservice.dto.mapper.TypeMapper;
 import ua.foxminded.pinchuk.javaspring.carrestservice.entity.Type;
 import ua.foxminded.pinchuk.javaspring.carrestservice.repository.TypeRepository;
 import ua.foxminded.pinchuk.javaspring.carrestservice.service.TypeService;
-import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemAlreadyExists;
-import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ItemNotFoundException;
+import ua.foxminded.pinchuk.javaspring.carrestservice.service.exception.ServiceException;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,9 +24,9 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    public TypeDTO findById(Long id) throws ItemNotFoundException {
+    public TypeDTO findById(Long id) throws ServiceException {
         return typeRepository.findById(id).map(typeMapper).orElseThrow(
-                () -> new ItemNotFoundException("Type with id " + id +
+                () -> new ServiceException("Type with id " + id +
                         " not found"));
     }
 
@@ -50,17 +49,17 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    public Type findByName(String typeName) throws ItemNotFoundException {
+    public Type findByName(String typeName) throws ServiceException {
         return typeRepository.findTypeByNameIgnoreCase(typeName).orElseThrow(
-                () -> new ItemNotFoundException("Type with name " + typeName +
+                () -> new ServiceException("Type with name " + typeName +
                         " not found")
         );
     }
 
     @Override
-    public Type add(String name) throws ItemAlreadyExists {
+    public Type add(String name) throws ServiceException {
         if (typeExistsName(name)) {
-            throw new ItemAlreadyExists("Type with name " + name + " already exists in db");
+            throw new ServiceException("Type with name " + name + " already exists in db");
         }
         return typeRepository.save(new Type(name));
     }

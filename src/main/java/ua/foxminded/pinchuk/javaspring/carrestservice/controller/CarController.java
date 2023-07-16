@@ -30,7 +30,7 @@ public class CarController {
     @Operation(summary = "Get all cars", description = "Get all cars from db")
     @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json",
             array = @ArraySchema(schema = @Schema(implementation = CarDTO.class))))
-    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
+    @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
             content = {@Content()})
     @SecurityRequirement(name = "bearerAuth", scopes = {"read:car"})
     @PreAuthorize("hasAuthority('read:car')")
@@ -64,7 +64,7 @@ public class CarController {
     @Operation(summary = "Add car", description = "Add car to db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"add:car"})
     @ApiResponse(responseCode = "200")
-    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
+    @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
             content = {@Content()})
     void addCar(@RequestBody Car car) {
         carService.saveOrUpdate(car);
@@ -75,7 +75,7 @@ public class CarController {
     @Operation(summary = "Update car", description = "Update existing car in db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"update:car"})
     @ApiResponse(responseCode = "200")
-    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
+    @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
             content = {@Content()})
     void updateCar(@RequestBody Car car) {
         carService.saveOrUpdate(car);
@@ -86,7 +86,7 @@ public class CarController {
     @Operation(summary = "Delete car", description = "Delete existing car from db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"delete:car"})
     @ApiResponse(responseCode = "200")
-    @ApiResponse(responseCode = "404", description = "Unauthorized or lack of required authority",
+    @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
             content = {@Content()})
     void deleteCar(@RequestBody Car car) {
         carService.remove(car);
