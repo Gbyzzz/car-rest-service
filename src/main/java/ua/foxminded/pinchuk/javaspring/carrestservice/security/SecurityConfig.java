@@ -52,18 +52,15 @@ public class SecurityConfig {
     }
 
     private Converter<Jwt, AbstractAuthenticationToken> jwtAuthenticationConverter() {
-        return new Converter<Jwt, AbstractAuthenticationToken>() {
-            @Override
-            public AbstractAuthenticationToken convert(Jwt jwt) {
-                Collection<GrantedAuthority> authorities = new ArrayList<>();
-                List<String> permissions = jwt.getClaimAsStringList("permissions");
-                if (permissions != null) {
-                    permissions.forEach(permission ->
-                            authorities.add(new SimpleGrantedAuthority(permission)));
-                }
-                return new UsernamePasswordAuthenticationToken(jwt.getSubject(),
-                        jwt.getTokenValue(), authorities);
+        return jwt -> {
+            Collection<GrantedAuthority> authorities = new ArrayList<>();
+            List<String> permissions = jwt.getClaimAsStringList("permissions");
+            if (permissions != null) {
+                permissions.forEach(permission ->
+                        authorities.add(new SimpleGrantedAuthority(permission)));
             }
+            return new UsernamePasswordAuthenticationToken(jwt.getSubject(),
+                    jwt.getTokenValue(), authorities);
         };
     }
 
