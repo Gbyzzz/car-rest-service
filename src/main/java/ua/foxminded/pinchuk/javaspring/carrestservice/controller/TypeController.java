@@ -56,7 +56,9 @@ public class TypeController {
     @ApiResponse(responseCode = "400",
             description = "Bad Request. Type with this name already exists",
             content = @Content())
-    @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
+    @ApiResponse(responseCode = "401", description = "Unauthorized",
+            content = {@Content()})
+    @ApiResponse(responseCode = "403", description = "Forbidden, no authority for that action",
             content = {@Content()})
     void addType(@RequestBody String name) throws ServiceException {
         typeService.add(name);
@@ -69,6 +71,8 @@ public class TypeController {
     @ApiResponse(responseCode = "200")
     @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
             content = {@Content()})
+    @ApiResponse(responseCode = "403", description = "Forbidden, no authority for that action",
+            content = {@Content()})
     void updateType(@RequestBody TypeDTO typeDTO) {
         typeService.update(typeDTO);
     }
@@ -79,6 +83,8 @@ public class TypeController {
     @SecurityRequirement(name = "bearerAuth", scopes = {"delete:type"})
     @ApiResponse(responseCode = "200")
     @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
+            content = {@Content()})
+    @ApiResponse(responseCode = "403", description = "Forbidden, no authority for that action",
             content = {@Content()})
     void deleteType(@PathVariable String name) {
         typeService.removeByName(name);

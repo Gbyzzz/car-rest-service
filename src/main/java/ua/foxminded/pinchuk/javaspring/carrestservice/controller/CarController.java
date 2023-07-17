@@ -32,6 +32,8 @@ public class CarController {
             array = @ArraySchema(schema = @Schema(implementation = CarDTO.class))))
     @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
             content = {@Content()})
+    @ApiResponse(responseCode = "403", description = "Forbidden, no authority for that action",
+            content = {@Content()})
     @SecurityRequirement(name = "bearerAuth", scopes = {"read:car"})
     @PreAuthorize("hasAuthority('read:car')")
     List<CarDTO> getCars(
@@ -53,7 +55,8 @@ public class CarController {
     @ApiResponse(responseCode = "200",
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = CarDTO.class)))
-    @ApiResponse(responseCode = "500", description = "Internal Server Error. Not valid id",
+    @ApiResponse(responseCode = "400",
+            description = "Bad Request. Not valid brand and/or type name(s)",
             content = @Content())
     CarDTO getCarById(@PathVariable Long id) throws Exception {
         return carService.findById(id);
@@ -77,6 +80,8 @@ public class CarController {
     @ApiResponse(responseCode = "200")
     @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
             content = {@Content()})
+    @ApiResponse(responseCode = "403", description = "Forbidden, no authority for that action",
+            content = {@Content()})
     void updateCar(@RequestBody Car car) {
         carService.saveOrUpdate(car);
     }
@@ -87,6 +92,8 @@ public class CarController {
     @SecurityRequirement(name = "bearerAuth", scopes = {"delete:car"})
     @ApiResponse(responseCode = "200")
     @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
+            content = {@Content()})
+    @ApiResponse(responseCode = "403", description = "Forbidden, no authority for that action",
             content = {@Content()})
     void deleteCar(@RequestBody Car car) {
         carService.remove(car);

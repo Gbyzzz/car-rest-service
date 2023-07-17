@@ -47,7 +47,8 @@ public class SecurityConfig {
         http.cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeHttpRequests) ->
-                        authorizeHttpRequests.requestMatchers("/**").permitAll())
+                        authorizeHttpRequests.requestMatchers("/**")
+                                .permitAll())
                 .oauth2ResourceServer((oauth2ResourceServer) ->
                         oauth2ResourceServer
                                 .jwt((jwt) -> jwt

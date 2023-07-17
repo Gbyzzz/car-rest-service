@@ -57,6 +57,8 @@ public class BrandController {
             content = @Content())
     @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
             content = {@Content()})
+    @ApiResponse(responseCode = "403", description = "Forbidden, no authority for that action",
+            content = {@Content()})
     void addBrand(@RequestBody String name) throws ServiceException {
         brandService.add(name);
     }
@@ -68,6 +70,8 @@ public class BrandController {
     @ApiResponse(responseCode = "200")
     @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
             content = {@Content()})
+    @ApiResponse(responseCode = "403", description = "Forbidden, no authority for that action",
+            content = {@Content()})
     void updateBrand(@RequestBody BrandDTO brandDTO) {
         brandService.update(brandDTO);
     }
@@ -78,6 +82,8 @@ public class BrandController {
     @SecurityRequirement(name = "bearerAuth", scopes = {"delete:brand"})
     @ApiResponse(responseCode = "200")
     @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
+            content = {@Content()})
+    @ApiResponse(responseCode = "403", description = "Forbidden, no authority for that action",
             content = {@Content()})
     void deleteBrand(@PathVariable String name) {
         brandService.removeByName(name);

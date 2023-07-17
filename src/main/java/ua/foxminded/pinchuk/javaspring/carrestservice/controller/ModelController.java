@@ -101,13 +101,15 @@ public class ModelController {
     @PreAuthorize("hasAuthority('add:model')")
     @Operation(summary = "Add model", description = "Add model to db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"add:model"})
-    @ApiResponse(responseCode = "200")
+    @ApiResponse(responseCode = "200", content = {@Content(mediaType = "application/json",
+            schema = @Schema(implementation = ModelDTO.class))})
     @ApiResponse(responseCode = "400",
             description = "Bad Request. Not valid brand and/or type name(s)",
             content = @Content())
     @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
-            content = {@Content(mediaType = "application/json",
-            schema = @Schema(implementation = ModelDTO.class))})
+            content = {@Content()})
+    @ApiResponse(responseCode = "403", description = "Forbidden, no authority for that action",
+            content = {@Content()})
     ModelDTO addModel(@PathVariable String brand, @PathVariable String name,
                   @PathVariable Integer year, @RequestBody List<String> typeNames)
             throws ServiceException {
@@ -118,13 +120,15 @@ public class ModelController {
     @PreAuthorize("hasAuthority('update:model')")
     @Operation(summary = "Update model", description = "Update existing model in db")
     @SecurityRequirement(name = "bearerAuth", scopes = {"update:model"})
-    @ApiResponse(responseCode = "200")
+    @ApiResponse(responseCode = "200", content = {@Content(mediaType = "application/json",
+            schema = @Schema(implementation = ModelDTO.class))})
     @ApiResponse(responseCode = "400",
             description = "Bad Request. Not valid model id",
             content = @Content())
     @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ModelDTO.class))})
+            content = {@Content()})
+    @ApiResponse(responseCode = "403", description = "Forbidden, no authority for that action",
+            content = {@Content()})
     ModelDTO updateModel(@RequestBody ModelDTO modelDTO) throws ServiceException {
         return modelService.update(modelDTO);
     }
@@ -138,6 +142,8 @@ public class ModelController {
             description = "Bad Request. Not valid brand and/or model name and/or year",
             content = @Content())
     @ApiResponse(responseCode = "401", description = "Unauthorized or lack of required authority",
+            content = {@Content()})
+    @ApiResponse(responseCode = "403", description = "Forbidden, no authority for that action",
             content = {@Content()})
     void deleteModel(@PathVariable String brand, @PathVariable String name,
                      @PathVariable Integer year) throws ServiceException {
